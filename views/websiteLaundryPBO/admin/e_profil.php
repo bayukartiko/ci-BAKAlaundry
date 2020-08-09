@@ -48,7 +48,7 @@
             border: none;
             border-radius: 0;
             margin-bottom: 40px;
-            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15)!important;
         }
 
         .navbar-btn {
@@ -67,13 +67,13 @@
             background: white;
             padding: 25px;
             border-radius: 10px;
-            border-right: 1px solid #1E272E;
-            border-left: 1px solid #1E272E;
+            /* border-right: 1px solid #1E272E; */
+            /* border-left: 1px solid #1E272E; */
             border-top: 3px solid #1E272E;
             border-bottom: 3px solid #1E272E;
         }
 
-        /* sidebar */
+        /* sidebar*/
 
         .wrapper {
             display: flex;
@@ -174,7 +174,7 @@
             color: #fff !important;
         }
 
-        /* konten*/
+        /* konten */
 
         #content {
             width: calc(100% - 250px);
@@ -186,9 +186,7 @@
             right: 0;
         }
         .isi{
-            height: 100%;
             padding: 15px;
-            text-align: center;
         }
 
         /* #content.active {
@@ -242,14 +240,14 @@
             </div>
 
             <ul class="list-unstyled components">
-			<li>
+                <li>
                     <!-- <p>
                         <img src="imgnotfound.png" alt="" srcset="" style="border-radius: 50%; width: 50px; height: 50px;">
                         <i class="fas fa-user-circle"></i>
                         Bayu Kartiko
                         Administrator
                     </p> -->
-                    <a href="#profilSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="#profilSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle active">
                         <!-- <i class="fas fa-user-circle"></i> -->
                         <img src="img/imgnotfound.png" alt="" srcset="" style="border-radius: 50%; width: 50px; height: 50px;">
                         Bayu Kartiko
@@ -257,19 +255,19 @@
                     </a>
                     <ul class="collapse list-unstyled" id="profilSubmenu">
                         <li>
-                            <a href="<?php echo site_url('AdminControl/e_profil'); ?>">Ubah Profil</a>
+                            <a href="#" class="active">Ubah Profil</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('AdminControl/e_password'); ?>">Ubah Password</a>
+                            <a href="<?php echo site_url('BAKAcontrol/e_password'); ?>">Ubah Password</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('AdminControl/logout'); ?>">Logout</a>
+                            <a href="<?php echo site_url('BAKAcontrol/index'); ?>">Logout</a>
                         </li>
                     </ul>
                 </li>
                 <br>
                 <li>
-                    <a href="<?php echo site_url('AdminControl/home'); ?>"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="<?php echo site_url('BAKAcontrol/home'); ?>"><i class="fas fa-home"></i> Dashboard</a>
                 </li>
                 <li>
                     <a href="#manajemenUserSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -277,29 +275,29 @@
                     </a>
                     <ul class="collapse list-unstyled" id="manajemenUserSubmenu">
                         <li>
-                            <a href="<?php echo site_url('AdminControl/m_admin'); ?>">Admin</a>
+                            <a href="<?php echo site_url('BAKAcontrol/m_admin'); ?>">Admin</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('AdminControl/m_kasir'); ?>">Kasir</a>
+                            <a href="<?php echo site_url('BAKAcontrol/m_kasir'); ?>">Kasir</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('AdminControl/m_owner'); ?>">Owner</a>
+                            <a href="<?php echo site_url('BAKAcontrol/m_owner'); ?>">Owner</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="<?php echo site_url('AdminControl/m_laundry'); ?>"><i class="fas fa-th-list"></i> Manajemen Laundry</a>
+                    <a href="<?php echo site_url('BAKAcontrol/m_laundry'); ?>"><i class="fas fa-th-list"></i> Manajemen Laundry</a>
                 </li>
                 <li>
-                    <a href="<?php echo site_url('AdminControl/m_outlet'); ?>"><i class="fas fa-store"></i> Manajemen Outlet</a>
+                    <a href="<?php echo site_url('BAKAcontrol/m_outlet'); ?>"><i class="fas fa-store"></i> Manajemen Outlet</a>
                 </li>
                 <li>
-                    <a href="<?php echo site_url('AdminControl/laporan'); ?>"><i class="fas fa-chart-line"></i> Laporan</a>
+                    <a href="<?php echo site_url('BAKAcontrol/laporan'); ?>"><i class="fas fa-chart-line"></i> Laporan</a>
                 </li>
             </ul>
 
             <ul class="list-unstyled tentang">
-                <a href="#" class="btn btn-outline-info"><i class="fas fa-book"></i> Tentang Website ini</a>
+                    <a href="<?php echo site_url('BAKAcontrol/tentang'); ?>" class="btn btn-primary"><i class="fas fa-book"></i> Tentang Website ini</a>
                 </li>
             </ul>
         </nav>
@@ -307,37 +305,113 @@
         <!-- Page Content  -->
         <div id="content">
 
-            <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
                 <div class="container-fluid">
-                    nanti disini untuk Breadcrumb
+                    <!-- <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-bars"></i>
+                        <span>Toggle Sidebar</span>
+                    </button>
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-align-justify"></i>
+                    </button> -->
+                    <span class="text-left">
+                        <a href="#">Home</a> / <a href="#">Profil</a> / <span class="text-muted">Edit Profil</span>
+                    </span> 
                 </div>
-            </nav> -->
-
+            </nav>
+            
             <div class="isi">
-                   <h1>BAKA Laundry</h1>
-                   <h5>hanya website tugas</h5>
-                   <br><br>
-                   Terima Kasih kepada:
-                   <br><br>
-                   <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>
-                   <br>
-                   <a href="https://flatuicolors.com/" target="_blank">Flat UI Colors</a>
-                   <br>
-                   <a href="https://fontawesome.com/" target="_blank">Font Awesome</a>
-                   <br>
-                   <a href="https://fonts.google.com/" target="_blank">Google Fonts</a>
-                   <br>
-                   <a href="https://codeigniter.com/" target="_blank">CodeIgniter</a>
-                   <br>
-                   <a href="https://themes.getbootstrap.com/" target="_blank">Sumber refrensi layout :D</a>
-            </div>
-    </div>
-</div>
 
-<!-- jQuery CDN - Slim version (=without AJAX) -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<!-- Popper.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+                <h6><i class="fas fa-user-edit"></i> Ubah Profil</h6>
+                
+                <form class="tabel">
+                    <p class="text-center mb-5"><i class="fas fa-user-edit"></i> Ubah Profil</p>
+
+                    <div class="form-row">
+                        <div class="col-md-2 mb-3 text-right">
+                            <label for="namalengkap">Nama Lengkap</label>
+                        </div>
+                        <div class="col-md-10 mb-3">
+                            <input type="text" class="form-control" id="namalengkap" placeholder="Masukkan Nama Lengkap" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-2 mb-3 text-right">
+                            <label for="username">Nama Pengguna</label>
+                        </div>
+                        <div class="col-md-10 mb-3">
+                            <input type="text" class="form-control" id="username" placeholder="Masukkan Nama Pengguna (username)" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-2 mb-3 text-right">
+                            <label for="password">kata sandi</label>
+                        </div>
+                        <div class="col-md-10 mb-3">
+                            <input type="password" class="form-control" id="password" placeholder="Masukkan Kata sandi (password)" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-2 mb-3 text-right">
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="col-md-10 mb-3">
+                            <input type="email" class="form-control" id="email" placeholder="Masukkan alamat email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-2 mb-3 text-right">
+                            <label for="alamat">Alamat Lengkap</label>
+                        </div>
+                        <div class="col-md-10 mb-3">
+                            <textarea name="alamat" id="alamat" class="form-control" placeholder="Masukkan Alamat Kasir" cols="30" rows="5" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-2 mb-3 text-right">
+                            <label for="telepon">Telepon</label>
+                        </div>
+                        <div class="col-md-10 mb-3">
+                            <input type="number" class="form-control" id="telepon" placeholder="Masukkan No. Telepon" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-2 mb-3 text-right">
+                            <label for="gender">Jenis Kelamin</label>
+                        </div>
+                        <div class="col-md-10 mb-3">
+                            <select class="form-control" id="gender" required>
+                                <option>Pria</option>
+                                <option>Wanita</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+						<div class="col-md-2 mb-3 text-right">
+                            <label for="foto">Foto profil</label>
+                        </div>
+						<div class="col-md-10 mb-3">
+							<input type="file" name="" id="foto" style="width: 100%;">
+						</div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-2 mb-3 text-right">
+                            <a href="<?php echo site_url('BAKAcontrol/m_admin'); ?>" class="btn btn-danger" type="button">Batal</a>
+                        </div>
+                        <div class="col-md-10 mb-3">
+                            <button class="btn btn-primary" type="submit">Simpan</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <!-- jQuery Custom Scroller CDN -->
@@ -365,6 +439,8 @@
             $('#example').DataTable( {
                 rowReorder: true
             } );
+
+
         });
     </script>
 </body>

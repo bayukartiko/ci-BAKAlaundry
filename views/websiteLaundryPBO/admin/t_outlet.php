@@ -11,51 +11,45 @@
 				<i class="fas fa-align-justify"></i>
 			</button> -->
 			<span class="text-left">
-				<a href="#">Home</a> / <a href="#">Manajemen Laundry</a> / <span class="text-muted">Tambah Paket</span>
+				<a href="#">Home</a> / <a href="#">Manajemen Outlet</a> / <span class="text-muted">Tambah Cabang</span>
 			</span> 
 		</div>
 	</nav>
 	
 	<div class="isi">
 
-		<h6><i class="fas fa-th-list"></i> Tambah Data Paket Laundry</h6>
+		<h6><i class="fas fa-th-list"></i> Tambah cabang</h6>
 		
 		<form class="tabel">
-			<p class="text-center mb-5"><i class="fas fa-th-list"></i> Tambah Data Paket Laundry</p>
+			<p class="text-center mb-5"><i class="fas fa-th-list"></i> Tambah cabang</p>
 
 			<div class="form-row">
 				<div class="col-md-2 mb-3 text-right">
-					<label for="jenis">Jenis Paket</label>
+					<label for="namacabang">Nama cabang</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<select class="form-control" id="jenis" required>
-						<option>Pakaian</option>
-						<option>Bed cover</option>
-						<option>Boneka</option>
-						<option>Jasa Setrika saja <span class="text-muted">(tanpa cuci)</span></option>
-						<option>Cuci Karpet</option>
-					</select>
+					<input type="text" class="form-control" id="namacabang" placeholder="Masukkan Nama cabang" required>
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="col-md-2 mb-3 text-right">
-					<label for="namapaket">Nama Paket</label>
+					<label for="alamatcabang">Alamat cabang</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="text" class="form-control" id="namapaket" placeholder="Masukkan Nama Paket" required>
+					<input type="text" class="form-control" id="alamatcabang" placeholder="Masukkan alamat cabang" required>
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="col-md-2 mb-3 text-right">
-					<label for="harga">Harga/Kg</label>
+					<label for="tlp">Telepon</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="number" class="form-control" id="harga" placeholder="Masukkan Harga/Kg" required>
+					<input type="number" class="form-control" id="tlp" placeholder="Masukkan Telepon" required>
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="col-md-2 mb-3 text-right">
-					<a href="<?php echo site_url('AdminControl/m_laundry'); ?>" class="btn btn-danger" type="button">Batal</a>
+					<a href="<?php echo site_url('AdminControl/m_outlet'); ?>" class="btn btn-danger" type="button">Batal</a>
 				</div>
 				<div class="col-md-10 mb-3">
 					<button class="btn btn-primary" type="submit">Tambah</button>

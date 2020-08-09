@@ -1,4 +1,4 @@
-	<!-- Page Content  -->
+	<!-- Content  -->
 	<div id="content">
 
 		<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
@@ -11,7 +11,7 @@
 					<i class="fas fa-align-justify"></i>
 				</button> -->
 				<span class="text-left">
-					<a href="#">Home</a> / <span class="text-muted">Dashboard</span>
+					<a href="<?php echo site_url('KasirControl/home'); ?>">Home</a> / <span class="text-muted">Dashboard</span>
 				</span>
 			</div>
 		</nav>
