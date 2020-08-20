@@ -19,7 +19,7 @@
 		<div class="isi">
 			<div class="tabel">
 				<i class="fas fa-list"></i> List Data Transaksi <br><br>
-				<a href="" class="btn btn-primary">Tambah transaksi</a> <br><br>
+				<a href="t_transaksi" class="btn btn-primary">Tambah transaksi</a> <br><br>
 				<table id="example" class="table table-striped table-bordered" style="width:100%">
 					<thead>
 						<tr>

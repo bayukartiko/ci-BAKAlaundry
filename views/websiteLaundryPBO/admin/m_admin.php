@@ -11,7 +11,7 @@
 				<i class="fas fa-align-justify"></i>
 			</button> -->
 			<span class="text-left">
-				<a href="#">Home</a> / <a href="#">Manajemen User</a> / <span class="text-muted">Admin</span>
+				<a href="#">Home</a> / <span class="text-muted">Manajemen User</span> / <span class="text-muted">Admin</span>
 			</span> 
 		</div>
 	</nav>
@@ -26,7 +26,9 @@
 					<div class="card-body">
 						<i class="fas fa-users" style="width: 50px;  height: 50px;"></i>
 						<h5 class="card-title">Total Administrator</h5>
-						<p class="card-text">1</p>
+						<p class="card-text">
+							<?= $h_admin; ?>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -44,18 +46,35 @@
 						<th>Username</th>
 						<th>Alamat</th>
 						<th>Nomor Telepon</th>
-						<th>aksi</th>
+						<th>Aksi</th>
+						<th>Detail</th>
 					</tr>
 				</thead>
 				<tbody>
+					<?php
+						if($h_admin>0){
+							$nomor = 1;
+							foreach ($tb_user as $data_admin){
+					?>
 					<tr>
-						<td>1</td>
-						<td>Bayu</td>
-						<td>Bayu kartiko</td>
-						<td>Isekai</td>
-						<td>123456789</td>
-						<td><button class="btn btn-info" style="cursor: not-allowed;" disabled>Edit</button> <button class="btn btn-danger" style="cursor: not-allowed;" disabled>Hapus</button></td>
+						<td><?=  $nomor++ ?></td>
+						<td><?= $data_admin->nama ?></td>
+						<td><?= $data_admin->username ?></td>
+						<td><?= $data_admin->alamat ?></td>
+						<td><?= $data_admin->tlp ?></td>
+						<td>
+							<button class="btn btn-info" style="cursor: not-allowed;" disabled>Edit</button> 
+							<button class="btn btn-danger" style="cursor: not-allowed;" disabled>Hapus</button>
+						</td>
+						<td>
+							<?= anchor('AdminControl/detail_data_admin/'.$data_admin->id,'<button type="button" class="btn btn-info">Detail</button>'); ?> 
+						</td>
 					</tr>
+					<?php 
+						}
+					 }else{ ?>
+					 	Data Kasir kosong !
+					 <?php } ?>
 				</tbody>
 				<tfoot>
 					<tr>
@@ -64,7 +83,8 @@
 						<th>Username</th>
 						<th>Alamat</th>
 						<th>Nomor Telepon</th>
-						<th>aksi</th>
+						<th>Aksi</th>
+						<th>Detail</th>
 					</tr>
 				</tfoot>
 			</table>

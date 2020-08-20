@@ -5,38 +5,42 @@
 	</div>
 
 	<ul class="list-unstyled components">
-		<li>
+		<li style="margin-top: -20px; margin-bottom: -24px;">
 			<!-- <p>
 				<img src="imgnotfound.png" alt="" srcset="" style="border-radius: 50%; width: 50px; height: 50px;">
 				<i class="fas fa-user-circle"></i>
 				Bayu Kartiko
 				Administrator
 			</p> -->
-			<a href="#profilSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+			<a href="#profilSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle text-center custom-carets">
 				<!-- <i class="fas fa-user-circle"></i> -->
-				<img src="<?= base_url('assets/img/foto/') . $tb_user['foto']; ?>" alt="" srcset="" style="border-radius: 50%; width: 50px; height: 50px;">
-				<?= $tb_user['username']; ?>
-				<p class="text-muted">Administrator</p>
+				<img src="<?= base_url('assets/img/foto/') . $tb_user['foto']; ?>" alt="" srcset="" style="border-radius: 50%; width: 100px; height: 100px;"> <br>
+				<?= $tb_user['nama']; ?> <br>
+				<span class="text-muted">Administrator</span>
 			</a>
 			<ul class="collapse list-unstyled" id="profilSubmenu">
 				<li>
-					<a href="<?php echo site_url('AdminControl/e_profil'); ?>">Ubah Profil</a>
+					<a href="<?php echo site_url('AdminControl/e_profil') ?>">Ubah Profil</a>
 				</li>
 				<li>
-					<a href="<?php echo site_url('AdminControl/e_password'); ?>">Ubah Password</a>
+					<a href="<?php echo site_url('AdminControl/e_password'); ?>">Ubah Kata sandi</a>
 				</li>
 				<li>
-					<a href="<?php echo site_url('BAKAcontrol/logout'); ?>">Logout</a>
+					<a href="<?php echo site_url('BAKAcontrol/logout'); ?>" onclick="return confirm('yakin mau keluar ?')">Keluar</a>
 				</li>
 			</ul>
 		</li>
 		<br>
+			<li>
+				<a href="home"><i class="fas fa-fw fa-home"></i> Home</a>
+			</li>
+			<li>
+				<a href="dashboard"><i class="fas fa-fw fa-info"></i> Dashboard</a>
+			</li>
 		<li>
-			<a href="AdminControl/dashboard"><i class="fas fa-fw fa-home"></i> Dashboard</a>
-		</li>
-		<li>
-			<a href="#manajemenUserSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-				<i class="fas fa-fw fa-user"></i> Manajemen User</a>
+			<a href="#manajemenUserSubmenu" type="button" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+				<i class="fas fa-fw fa-user-tie"></i> User
+				<span class="caret"></span>
 			</a>
 			<ul class="collapse list-unstyled" id="manajemenUserSubmenu">
 				<li>
@@ -51,10 +55,16 @@
 			</ul>
 		</li>
 		<li>
-			<a href="<?php echo site_url('AdminControl/m_laundry'); ?>"><i class="fas fa-fw fa-th-list"></i> Manajemen Laundry</a>
+			<a href="<?php echo site_url('AdminControl/m_member'); ?>"><i class="fas fa-fw fa-user-tag"></i> Member</a>
 		</li>
 		<li>
-			<a href="<?php echo site_url('AdminControl/m_outlet'); ?>"><i class="fas fa-fw fa-store"></i> Manajemen Outlet</a>
+			<a href="<?php echo site_url('AdminControl/m_laundry'); ?>"><i class="fas fa-fw fa-th-list"></i> Paket Laundry</a>
+		</li>
+		<li>
+			<a href="<?php echo site_url('AdminControl/m_outlet'); ?>"><i class="fas fa-fw fa-store"></i> Outlet</a>
+		</li>
+		<li>
+			<a href="#"><i class="fas fa-fw fa-shopping-cart"></i></i> Transaksi</a>
 		</li>
 		<li>
 			<a href="<?php echo site_url('AdminControl/laporan'); ?>"><i class="fas fa-fw fa-chart-line"></i> Laporan</a>

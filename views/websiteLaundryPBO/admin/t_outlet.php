@@ -11,7 +11,7 @@
 				<i class="fas fa-align-justify"></i>
 			</button> -->
 			<span class="text-left">
-				<a href="#">Home</a> / <a href="#">Manajemen Outlet</a> / <span class="text-muted">Tambah Cabang</span>
+				<a href="<?php echo site_url('AdminControl/home'); ?>">Home</a> / <a href="<?php echo site_url('AdminControl/m_outlet'); ?>">Manajemen Outlet</a> / <span class="text-muted">Tambah Cabang</span>
 			</span> 
 		</div>
 	</nav>
@@ -20,7 +20,7 @@
 
 		<h6><i class="fas fa-th-list"></i> Tambah cabang</h6>
 		
-		<form class="tabel">
+		<form class="tabel" action="<?= site_url('AdminControl/simpan_data_outlet') ?>" method="POST" enctype="multipart/form-data">
 			<p class="text-center mb-5"><i class="fas fa-th-list"></i> Tambah cabang</p>
 
 			<div class="form-row">
@@ -28,7 +28,7 @@
 					<label for="namacabang">Nama cabang</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="text" class="form-control" id="namacabang" placeholder="Masukkan Nama cabang" required>
+					<input type="text" class="form-control" id="namacabang" name="nama" placeholder="Masukkan Nama cabang" required>
 				</div>
 			</div>
 			<div class="form-row">
@@ -36,7 +36,7 @@
 					<label for="alamatcabang">Alamat cabang</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="text" class="form-control" id="alamatcabang" placeholder="Masukkan alamat cabang" required>
+					<input type="text" class="form-control" id="alamatcabang" name="alamat" placeholder="Masukkan alamat cabang" required>
 				</div>
 			</div>
 			<div class="form-row">
@@ -44,7 +44,7 @@
 					<label for="tlp">Telepon</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="number" class="form-control" id="tlp" placeholder="Masukkan Telepon" required>
+					<input type="number" class="form-control" id="tlp" name="telepon" placeholder="Masukkan Telepon" required>
 				</div>
 			</div>
 			<div class="form-row">

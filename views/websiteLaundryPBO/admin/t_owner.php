@@ -11,7 +11,7 @@
 				<i class="fas fa-align-justify"></i>
 			</button> -->
 			<span class="text-left">
-				<a href="#">Home</a> / <a href="#">Manajemen User</a> / <span class="text-muted">Owner</span> / <span class="text-muted">Tambah Owner</span>
+			<a href="<?php echo site_url('AdminControl/home'); ?>">Home</a> / <span class="text-muted">Manajemen User</span> / <a href="<?php echo site_url('AdminControl/m_owner'); ?>">Owner</a> / <span class="text-muted">Tambah Owner</>
 			</span> 
 		</div>
 	</nav>
@@ -20,7 +20,7 @@
 
 		<h6><i class="fas fa-user-plus"></i> Tambah Data Owner</h6>
 		
-		<form class="tabel">
+		<form class="tabel" action="<?= site_url('AdminControl/simpan_data_owner') ?>" method="POST" enctype="multipart/form-data">
 			<p class="text-center mb-5"><i class="fas fa-user-plus"></i> Tambah Data Owner</p>
 
 			<div class="form-row">
@@ -28,7 +28,7 @@
 					<label for="namalengkap">Nama Lengkap</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="text" class="form-control" id="namalengkap" placeholder="Masukkan Nama Lengkap" required>
+					<input type="text" class="form-control" name="nama" id="namalengkap" placeholder="Masukkan Nama Lengkap" required>
 				</div>
 			</div>
 			<div class="form-row">
@@ -36,7 +36,7 @@
 					<label for="username">Nama Pengguna</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="text" class="form-control" id="username" placeholder="Masukkan Nama Pengguna (username)" required>
+					<input type="text" class="form-control" name="username" id="username" placeholder="Masukkan Nama Pengguna (username)" required>
 				</div>
 			</div>
 			<div class="form-row">
@@ -44,7 +44,15 @@
 					<label for="password">kata sandi</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="password" class="form-control" id="password" placeholder="Masukkan Kata sandi (password)" required>
+					<input type="password" class="form-control" name="password" id="password" placeholder="Masukkan Kata sandi (password)" required>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col-md-2 mb-3 text-right">
+					<label for="email">Alamat Email</label>
+				</div>
+				<div class="col-md-10 mb-3">
+					<input type="email" class="form-control" name="email" id="email" placeholder="Masukkan Email" required>
 				</div>
 			</div>
 			<div class="form-row">
@@ -60,7 +68,7 @@
 					<label for="telepon">Telepon</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="number" class="form-control" id="telepon" placeholder="Masukkan No. Telepon" required>
+					<input type="number" class="form-control" name="telepon" id="telepon" placeholder="Masukkan No. Telepon" required>
 				</div>
 			</div>
 			<div class="form-row">
@@ -68,9 +76,51 @@
 					<label for="gender">Jenis Kelamin</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<select class="form-control" id="gender" required>
+					<select class="form-control" name="gender" id="gender" required>
 						<option>Pria</option>
 						<option>Wanita</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col-md-2 mb-3 text-right">
+					<label for="foto">Foto Profil</label>
+				</div>
+				<div class="col-md-10 mb-3">
+					<div class="row">
+						<div class="col-md-12">
+							<!-- <input type="file" name="foto" id="foto" style="width: 100%;"> -->
+							<div class="custom-file">
+								<input type="file" class="custom-file-input" id="gambar" name="foto">
+								<label class="custom-file-label" for="gambar">Choose file</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col-md-2 mb-3 text-right">
+					<label for="user">Tipe user</label>
+				</div>
+				<div class="col-md-10 mb-3">
+					<select class="form-control" id="user" disabled>
+						<option>admin</option>
+						<option>kasir</option>
+						<option selected>owner</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col-md-2 mb-3 text-right">
+					<label for="cabang">Cabang</label>
+				</div>
+				<div class="col-md-10 mb-3">
+					<select class="form-control" id="cabang" name="cabang">
+						<?php foreach($outlet as $cabang) : ?>
+							<!-- /</?php if( $cabang == $edit->jenis_cabang) { ?> -->
+								<option value="<?= $cabang->id; ?>"><?= $cabang->nama; ?></option>
+							<!-- /</?php }?> -->
+						<?php endforeach; ?>
 					</select>
 				</div>
 			</div>

@@ -26,7 +26,9 @@
 				<div class="card-body">
 					<i class="fas fa-th-list" style="width: 50px;  height: 50px;"></i>
 					<h5 class="card-title">Total Paket Laundry tersedia</h5>
-					<p class="card-text">1</p>
+					<p class="card-text">
+						<?= $h_paket; ?>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -39,27 +41,61 @@
 		<br><br>
 		<a href="<?php echo site_url('AdminControl/t_paket'); ?>" class="btn btn-info">Tambah Paket</a>
 		<br><br>
+			<?php if($this->session->flashdata('sukses')) { ?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					Data paket <strong>Berhasil</strong> <?= $this->session->flashdata('sukses'); ?>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php } ?>
+			<br>
 		<table id="example" class="table table-striped table-bordered" style="width:100%">
 			<thead>
 				<tr>
 					<th>Nomor</th>
 					<th>Jenis</th>
+					<th>Nama</th>
 					<th>Harga/Kg</th>
 					<th>aksi</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>1</td>
-					<td>Cuci dosa</td>
-					<td>1000</td>
-					<td><button class="btn btn-info">Edit</button> <button class="btn btn-danger">Hapus</button></td>
-				</tr>
+					<?php
+						if($h_paket>0){
+							$nomor = 1;
+							foreach ($tb_paket as $data_paket){
+						?>
+						<tr>
+							<td><?=  $nomor++ ?></td>
+							<td><?= $data_paket->jenis ?></td>
+							<td><?= $data_paket->nama_paket ?></td>
+							<td><?= $data_paket->harga ?></td>
+							<td> 
+								<a href="<?= site_url('AdminControl/edit_data_paket/'.$data_paket->id); ?>"><button class="btn btn-info">Edit</button></a> 
+								<a href="<?= site_url('AdminControl/hapus_data_paket/'.$data_paket->id); ?>"><button class="btn btn-danger" onclick="return confirm('yakin?');">Hapus</button></a>
+							</td>
+							<!-- <td> 
+								/</?= anchor('AdminControl/detail_data_paket/'.$data_paket->id,'<button type="button" class="btn btn-primary">Detail</button>'); ?> 
+							</td> -->
+						</tr>
+						<?php 
+							}
+						}else{ ?>
+							<div class="alert alert-warning alert-dismissible fade show" role="alert">
+								Data paket <strong>Kosong !</strong>.
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<!-- Data Kasir kosong ! -->
+					 <?php } ?>
 			</tbody>
 			<tfoot>
 				<tr>
 					<th>Nomor</th>
 					<th>Jenis</th>
+					<th>Nama</th>
 					<th>Harga/Kg</th>
 					<th>aksi</th>
 				</tr>

@@ -188,6 +188,11 @@
         .isi{
             padding: 15px;
         }
+		.isiTentang{
+            height: 100%;
+            padding: 15px;
+            text-align: center;
+        }
 
         /* #content.active {
             width: 100%;

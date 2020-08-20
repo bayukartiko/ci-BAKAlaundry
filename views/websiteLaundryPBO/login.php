@@ -5,6 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+	<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/img/apple-touch-icon.png')?>">
+	<link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/img/favicon-32x32.png')?>">
+	<link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/img/favicon-16x16.png')?>">
+	<link rel="manifest" href="<?= base_url('assets/img/site.webmanifest')?>">
+	
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <!-- font awesome -->
@@ -98,11 +103,11 @@
         }
     </style>
 
-    <title>Masuk BAKA Laundry</title>
+    <title>Masuk Laundry</title>
   </head>
   <body class="text-center">
       <div class="container">
-          <form class="form-masuk" method="POST" action="<?= base_url('BAKAcontrol/index') ?>">
+          <form class="form-masuk" method="POST" action="<?= base_url('BAKAcontrol/aksi_login') ?>">
                 <h1 class="h3 mb-3 font-weight-normal">BAKA Laundry</h1>
                 <h4>Masuk</h4>
 			  <br>
@@ -122,12 +127,12 @@
 					</div>
 				<?php } ?>
 			  
-                <label for="inputEmailPengguna" class="sr-only">Nama Pengguna</label>
-				<input type="email" id="inputEmailPengguna" class="form-control" name="email" placeholder="Alamat Email" value="<?= set_value('email') ?>">
-				<?= form_error('email', '<small class="text-danger">', '</small>'); ?>
+                <label for="inputUsernamePengguna" class="sr-only">Nama Pengguna</label>
+				<input type="text" id="inputUsernamePengguna" class="form-control" name="username" placeholder="Nama Pengguna (username)" value="<?= set_value('username') ?>">
+				<?= form_error('username', '<small class="text-danger">', '</small>'); ?>
 
                 <label for="inputSandi" class="sr-only">Kata Sandi</label>
-				<input type="password" id="inputPassword" class="form-control" name="password" placeholder="Kata Sandi"> <span toggle="#inputPassword" class="far fa-eye ikon-mata lihat-password"></span>
+				<input type="password" id="inputPassword" class="form-control" name="password" placeholder="Kata Sandi (password)"> <span toggle="#inputPassword" class="far fa-eye ikon-mata lihat-password"></span>
 				<?= form_error('password', '<small class="text-danger">', '</small>'); ?>
                 <!-- <div class="checkbox mb-3">
                     <label>
@@ -137,9 +142,9 @@
                 <input type="submit" class="btn tombolMasuk btn-lg btn-primary btn-block" value="Masuk">
                 <hr>
                 <br>
-                <a href="#">Lupa Password ?</a>
+                <del><a href="#">Lupa Password ?</a></del>
                 <br>
-                <a href="<?php echo site_url('BAKAcontrol/register'); ?>" style="margin-top: 10px; margin-bottom: 5px;">Buat akun baru</a>
+                <del> <a href="#" style="margin-top: 10px; margin-bottom: 5px;">Buat akun baru</a> </del>
           </form>
       </div>
 

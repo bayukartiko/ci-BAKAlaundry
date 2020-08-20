@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>BAKA Laundry</title>
+	<title>BAKA Laundry</title>
+	<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/img/apple-touch-icon.png')?>">
+	<link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/img/favicon-32x32.png')?>">
+	<link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/img/favicon-16x16.png')?>">
+	<link rel="manifest" href="<?= base_url('assets/img/site.webmanifest')?>">
 
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -16,11 +20,31 @@
             DEMO STYLE
         */
 
+		@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand+SC:300,400,500,600,700');
         @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
         body {
             font-family: 'Poppins', sans-serif;
             background: #dfe6e9;
         }
+			::-webkit-scrollbar {
+				width: 10px;
+			}
+
+			/* Track */
+			::-webkit-scrollbar-track {
+				background: #f1f1f1; 
+			}
+			
+			/* Handle */
+			::-webkit-scrollbar-thumb {
+				background: #888; 
+			}
+
+			/* Handle on hover */
+			::-webkit-scrollbar-thumb:hover {
+				background: #555; 
+			}
+
         h1,h2,h4,h5,h6{
             color: #2d3436;
         }
@@ -42,7 +66,7 @@
         }
 
         .navbar {
-            height: 81.5px;
+            height: 81.4px;
             padding: 15px 10px;
             background: #fff;
             border: none;
@@ -90,7 +114,26 @@
             background: #1e272e;
             color: #fff;
             transition: all 0.3s;
+			overflow: auto;
         }
+			#sidebar::-webkit-scrollbar {
+				width: 5px;
+			}
+
+			/* Track */
+			#sidebar::-webkit-scrollbar-track {
+				background: #f1f1f1; 
+			}
+			
+			/* Handle */
+			#sidebar::-webkit-scrollbar-thumb {
+				background: #888; 
+			}
+
+			/* Handle on hover */
+			#sidebar::-webkit-scrollbar-thumb:hover {
+				background: #555; 
+			}
 
         #sidebar.active {
             margin-left: -250px;
@@ -99,6 +142,8 @@
         #sidebar .sidebar-header {
             padding: 20px;
             background: #485460;
+			font-family: 'Patrick Hand SC', cursive;
+			text-align: center;
         }
 
         #sidebar ul.components {
@@ -136,14 +181,22 @@
             color: #ecf0f1;
             background: #5e5e5e;
         }
-
-        .dropdown-toggle::after {
+		
+        .dropdown-toggle::after{
             display: block;
             position: absolute;
             top: 50%;
             right: 20px;
             transform: translateY(-50%);
         }
+		/* .caret {
+			-moz-transition: transform 1s;
+			-webkit-transition: transform 1s;
+			transition: transform 1s;
+		}
+		.rotate-180 {
+			transform: rotate(-180deg);
+		} */
 
         ul ul a {
             font-size: 0.9em !important;
@@ -187,6 +240,11 @@
         }
         .isi{
             padding: 15px;
+        }
+		.isiTentang{
+            height: 100%;
+            padding: 15px;
+            text-align: center;
         }
 
         /* #content.active {

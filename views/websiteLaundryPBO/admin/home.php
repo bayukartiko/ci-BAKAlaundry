@@ -1,119 +1,88 @@
-	<!-- Page Content  -->
-	<div id="content">
+<!-- Content  -->
+<div id="content">
 
-		<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-			<div class="container-fluid">
-				<!-- <button type="button" id="sidebarCollapse" class="btn btn-info">
-					<i class="fas fa-bars"></i>
-					<span>Toggle Sidebar</span>
-				</button>
-				<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<i class="fas fa-align-justify"></i>
-				</button> -->
-				<span class="text-left">
-					<a href="#">Home</a> / <span class="text-muted">Dashboard</span>
-				</span>
-			</div>
-		</nav>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+		<div class="container-fluid">
+			<!-- <button type="button" id="sidebarCollapse" class="btn btn-info">
+				<i class="fas fa-bars"></i>
+				<span>Toggle Sidebar</span>
+			</button>
+			<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<i class="fas fa-align-justify"></i>
+			</button> -->
+			<span class="text-left">
+				<span class="text-muted">Home</span>
+			</span>
+		</div>
+	</nav>
 
-		<div class="isi">
-				<div class="row row-cols-1 row-cols-md-3 text-center">
-					<div class="col mb-4">
-						<div class="card bg-light h-100">
-							<!-- <img src="..." class="card-img-top" alt="..."> -->
-					<div class="card-body">
-						<i class="fas fa-users" style="width: 50px;  height: 50px;"></i>
-						<h5 class="card-title">Total Member</h5>
-						<p class="card-text">0</p>
+	<div class="isi">
+		<h4>Selamat Datang <?= $tb_user['nama']; ?> Di website BAKA Laundry</h4>
+		<!-- <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+			<ol class="carousel-indicators">
+				<li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+				<li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+				<li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+			</ol>
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<img src="<?= base_url('assets/img/1.jpg'); ?>" class="d-block w-100">
+					<div class="carousel-caption d-none d-md-block">
+						<h5>First slide label</h5>
+						<p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<img src="<?= base_url('assets/img/1.jpg'); ?>" class="d-block w-100">
+					<div class="carousel-caption d-none d-md-block">
+						<h5>Second slide label</h5>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<img src="<?= base_url('assets/img/1.jpg'); ?>" class="d-block w-100">
+					<div class="carousel-caption d-none d-md-block">
+						<h5>Third slide label</h5>
+						<p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
 					</div>
 				</div>
 			</div>
-			<div class="col mb-4">
-				<div class="card bg-light h-100">
-					<!-- <img src="..." class="card-img-top" alt="..."> -->
-					<div class="card-body">
-						<i class="fas fa-users" style="width: 50px;  height: 50px;"></i>
-						<h5 class="card-title">Total Kasir</h5>
-						<p class="card-text">0</p>
-					</div>
+			<a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a>
+			<a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
+		</div> -->
+
+		<?php if($this->session->flashdata('sukses')) { ?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					Profil anda <strong>Berhasil</strong> <?= $this->session->flashdata('sukses'); ?>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
 				</div>
-			</div>
-			<div class="col mb-4">
-				<div class="card bg-light h-100">
-					<!-- <img src="..." class="card-img-top" alt="..."> -->
-					<div class="card-body">
-						<i class="fas fa-shopping-cart" style="width: 50px;  height: 50px;"></i>
-						<h5 class="card-title">Order Baru</h5>
-						<p class="card-text">0</p>
-					</div>
+			<?php } ?>
+
+		<div class="card mb-3" style="max-width: 540px;">
+			<div class="row no-gutters">
+				<div class="col-md-4">
+					<img src="<?= base_url('assets/img/foto/') . $tb_user['foto']; ?>" class="card-img">
 				</div>
-			</div>
-			<div class="col mb-4">
-				<div class="card bg-light h-100">
-					<!-- <img src="..." class="card-img-top" alt="..."> -->
-					<div class="card-body">
-						<i class="fas fa-shopping-cart" style="width: 50px;  height: 50px;"></i>
-						<h5 class="card-title">Total Order</h5>
-						<p class="card-text">0</p>
+				<div class="col-md-8">
+					<div class="card-body" style="padding: 10px;">
+						<h5 class="card-title"><?= $tb_user['nama']; ?></h5>
+						<p class="card-text"><?= $tb_user['email']; ?></p>
+						<p class="card-text"><small class="text-muted"><?= date('d F Y', $tb_user['tgl_dibuat']); ?></small></p>
+						<a href="<?php echo site_url('AdminControl/e_profil') ?>" class="btn btn-primary">Ubah profil</a> | 
+						<a href="<?php echo site_url('AdminControl/e_password') ?>" class="btn btn-primary">Ubah kata sandi</a>
+						<!-- <a href="#" onclick="swal('coba alert', 'coba sweetalert', 'success')">coba</a> -->
 					</div>
 				</div>
 			</div>
 		</div>
-		
-		<div class="garis"></div>
-		
-		<div class="tabel">
-			<i class="fas fa-list"></i> List Data Orderan Baru <br><br>
-			<table id="example" class="table table-striped table-bordered" style="width:100%">
-				<thead>
-					<tr>
-						<th>Nomor</th>
-						<th>Tgl.transaksi</th>
-						<th>Pelanggan</th>
-						<th>Paket</th>
-						<th>Pembayaran</th>
-						<th>Status order</th>
-						<th>Total</th>
-						<th>Aksi</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>1</td>
-						<td>04/05/20</td>
-						<td>Cleveland</td>
-						<td>Cuci selimut</td>
-						<td>Lunas</td>
-						<td>Baru</td>
-						<td>35.000</td>
-						<td><button class="btn btn-info">Detail</button></td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>03/01/219</td>
-						<td>MEh</td>
-						<td>Cuci otak</td>
-						<td>Belum lunas</td>
-						<td>Lama</td>
-						<td>1.000.000</td>
-						<td><button class="btn btn-info">Detail</button></td>
-					</tr>
-				</tbody>
-				<tfoot>
-					<tr>
-						<th>Nomor</th>
-						<th>Tgl.transaksi</th>
-						<th>Pelanggan</th>
-						<th>Paket</th>
-						<th>Pembayaran</th>
-						<th>Status order</th>
-						<th>Total</th>
-						<th>Aksi</th>
-					</tr>
-				</tfoot>
-			</table>
-		</div>
-		
-		<div class="garis"></div>
+			
 	</div>
 </div>

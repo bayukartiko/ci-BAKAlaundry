@@ -11,7 +11,7 @@
 			<i class="fas fa-align-justify"></i>
 		</button> -->
 		<span class="text-left">
-			<a href="#">Home</a> / <span class="text-muted">Manajemen Outlet</span>
+			<a href="<?php echo site_url('AdminControl/home'); ?>">Home</a> / <span class="text-muted">Manajemen Outlet</span>
 		</span> 
 	</div>
 </nav>
@@ -26,7 +26,9 @@
 				<div class="card-body">
 					<i class="fas fa-fw fa-store" style="width: 50px;  height: 50px;"></i>
 					<h5 class="card-title">Total cabang tersedia</h5>
-					<p class="card-text">1</p>
+					<p class="card-text">
+						<?= $h_outlet; ?>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -39,6 +41,15 @@
 		<br><br>
 		<a href="<?php echo site_url('AdminControl/t_outlet'); ?>" class="btn btn-info">Tambah Cabang</a>
 		<br><br>
+			<?php if($this->session->flashdata('sukses')) { ?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					Data outlet <strong>Berhasil</strong> <?= $this->session->flashdata('sukses'); ?>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php } ?>
+		<br>
 		<table id="example" class="table table-striped table-bordered" style="width:100%">
 			<thead>
 				<tr>
@@ -50,13 +61,31 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>1</td>
-					<td>Cabang 1</td>
-					<td>kabel sata</td>
-					<td>08123456789</td>
-					<td><button class="btn btn-info">Edit</button>
-				</tr>
+				<?php
+					if($h_outlet>0){
+						$nomor = 1;
+						foreach ($tb_outlet as $data_outlet){
+					?>
+					<tr>
+						<td><?=  $nomor++ ?></td>
+						<td><?= $data_outlet->nama ?></td>
+						<td><?= $data_outlet->alamat ?></td>
+						<td><?= $data_outlet->tlp ?></td>
+						<td> 
+							<a href="<?= site_url('AdminControl/edit_data_outlet/'.$data_outlet->id); ?>"><button class="btn btn-info">Edit</button></a> 
+						</td>
+					</tr>
+					<?php 
+						}
+					 }else{ ?>
+						<div class="alert alert-warning alert-dismissible fade show" role="alert">
+							Data kasir <strong>Kosong !</strong>.
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					 	<!-- Data Kasir kosong ! -->
+				<?php } ?>
 			</tbody>
 			<tfoot>
 				<tr>

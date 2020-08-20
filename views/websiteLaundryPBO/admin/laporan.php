@@ -48,7 +48,11 @@
 							Pilih cabang
 						</label>
 						<select class="form-control" id="cabang" required>
-							<option>Cabang 1</option>
+						<?php foreach($outlet as $cabang) : ?>
+							<!-- /</?php if( $cabang == $edit->jenis_cabang) { ?> -->
+								<option value="<?= $cabang->id; ?>"><?= $cabang->nama; ?></option>
+							<!-- /</?php }?> -->
+						<?php endforeach; ?>
 						</select>
 					</div>
 				</div>

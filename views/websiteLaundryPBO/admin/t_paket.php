@@ -11,7 +11,7 @@
 				<i class="fas fa-align-justify"></i>
 			</button> -->
 			<span class="text-left">
-				<a href="#">Home</a> / <a href="#">Manajemen Laundry</a> / <span class="text-muted">Tambah Paket</span>
+				<a href="<?php echo site_url('AdminControl/home'); ?>">Home</a> / <a href="<?php echo site_url('AdminControl/m_laundry'); ?>">Manajemen Laundry</a> / <span class="text-muted">Tambah Paket</span>
 			</span> 
 		</div>
 	</nav>
@@ -20,20 +20,34 @@
 
 		<h6><i class="fas fa-th-list"></i> Tambah Data Paket Laundry</h6>
 		
-		<form class="tabel">
+		<form class="tabel" action="<?= site_url('AdminControl/simpan_data_paket') ?>" method="POST" enctype="multipart/form-data">
 			<p class="text-center mb-5"><i class="fas fa-th-list"></i> Tambah Data Paket Laundry</p>
 
+			<div class="form-row">
+				<div class="col-md-2 mb-3 text-right">
+					<label for="outlet">Pilih outlet</label>
+				</div>
+				<div class="col-md-10 mb-3">
+					<select class="form-control" id="outlet" name="cabang" required>
+						<?php foreach($outlet as $cabang) : ?>
+							<!-- /</?php if( $cabang == $edit->jenis_cabang) { ?> -->
+								<option value="<?= $cabang->id; ?>"><?= $cabang->nama; ?></option>
+							<!-- /</?php }?> -->
+						<?php endforeach; ?>
+					</select>
+				</div>
+			</div>
 			<div class="form-row">
 				<div class="col-md-2 mb-3 text-right">
 					<label for="jenis">Jenis Paket</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<select class="form-control" id="jenis" required>
-						<option>Pakaian</option>
-						<option>Bed cover</option>
-						<option>Boneka</option>
-						<option>Jasa Setrika saja <span class="text-muted">(tanpa cuci)</span></option>
-						<option>Cuci Karpet</option>
+					<select class="form-control" name="jenis" id="jenis" required>
+						<?php foreach($jenis as $j) : ?>
+							<!-- /</?php if( $cabang == $edit->jenis_cabang) { ?> -->
+								<option value="<?= $j ?>"><?= $j; ?></option>
+							<!-- /</?php }?> -->
+						<?php endforeach; ?>
 					</select>
 				</div>
 			</div>
@@ -42,7 +56,7 @@
 					<label for="namapaket">Nama Paket</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="text" class="form-control" id="namapaket" placeholder="Masukkan Nama Paket" required>
+					<input type="text" class="form-control" id="namapaket" name="namapaket" placeholder="Masukkan Nama Paket" required>
 				</div>
 			</div>
 			<div class="form-row">
@@ -50,7 +64,7 @@
 					<label for="harga">Harga/Kg</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="number" class="form-control" id="harga" placeholder="Masukkan Harga/Kg" required>
+					<input type="number" class="form-control" id="harga" name="harga" placeholder="Masukkan Harga/Kg" required>
 				</div>
 			</div>
 			<div class="form-row">

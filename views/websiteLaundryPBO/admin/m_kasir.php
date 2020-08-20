@@ -11,7 +11,7 @@
 				<i class="fas fa-align-justify"></i>
 			</button> -->
 			<span class="text-left">
-				<a href="#">Home</a> / <a href="#">Manajemen User</a> / <span class="text-muted">Kasir</span>
+				<a href="<?php echo site_url('AdminControl/home'); ?>">Home</a> / <span class="text-muted">Manajemen User</span> / <span class="text-muted">Kasir</span>
 			</span> 
 		</div>
 	</nav>
@@ -26,7 +26,9 @@
 					<div class="card-body">
 						<i class="fas fa-users" style="width: 50px;  height: 50px;"></i>
 						<h5 class="card-title">Total Kasir</h5>
-						<p class="card-text">1</p>
+						<p class="card-text text-dark">
+							<?= $h_kasir; ?>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -38,8 +40,16 @@
 			<i class="fas fa-user"></i> Data Kasir 
 			<br><br>
 			<a href="<?php echo site_url('AdminControl/t_kasir'); ?>" class="btn btn-info">Tambah Kasir</a>
-
 			<br><br>
+			<?php if($this->session->flashdata('sukses')) { ?>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					Data kasir <strong>Berhasil</strong> <?= $this->session->flashdata('sukses'); ?>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			<?php } ?>
+			<br>
 			<table id="example" class="table table-striped table-bordered" style="width:100%">
 				<thead>
 					<tr>
@@ -48,18 +58,48 @@
 						<th>Username</th>
 						<th>Alamat</th>
 						<th>Nomor Telepon</th>
-						<th>aksi</th>
+						<th>Aksi</th>
+						<th>Detail</th>
 					</tr>
 				</thead>
 				<tbody>
+					<?php
+					if($h_kasir>0){
+						$nomor = 1;
+						foreach ($tb_user as $data_kasir){
+					?>
 					<tr>
-						<td>1</td>
-						<td>baba</td>
-						<td>babayuyu</td>
-						<td>Isekai</td>
-						<td>123456789</td>
-						<td><button class="btn btn-info">Edit</button> <button class="btn btn-danger">Hapus</button></td>
+						<td><?=  $nomor++ ?></td>
+						<td><?= $data_kasir->nama ?></td>
+						<td><?= $data_kasir->username ?></td>
+						<td><?= $data_kasir->alamat ?></td>
+						<td><?= $data_kasir->tlp ?></td>
+						<?php if($data_kasir->username == 'kasir'){ ?>
+							<td> 
+								<a href="#"><button class="btn btn-info" disabled>Edit</button></a> 
+								<a href="#"><button class="btn btn-danger" onclick="return confirm('yakin?');" disabled>Hapus</button></a>
+							</td>
+						<?php }else{ ?>
+							<td> 
+								<a href="<?= site_url('AdminControl/edit_data_kasir/'.$data_kasir->id); ?>"><button class="btn btn-info">Edit</button></a> 
+								<a href="<?= site_url('AdminControl/hapus_data_kasir/'.$data_kasir->id); ?>"><button class="btn btn-danger" onclick="return confirm('yakin?');">Hapus</button></a>
+							</td>
+						<?php } ?>
+						<td> 
+							<?= anchor('AdminControl/detail_data_kasir/'.$data_kasir->id,'<button type="button" class="btn btn-primary">Detail</button>'); ?> 
+						</td>
 					</tr>
+					<?php 
+						}
+					 }else{ ?>
+						<div class="alert alert-warning alert-dismissible fade show" role="alert">
+							Data kasir <strong>Kosong !</strong>.
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					 	<!-- Data Kasir kosong ! -->
+					 <?php } ?>
 				</tbody>
 				<tfoot>
 					<tr>
@@ -68,7 +108,8 @@
 						<th>Username</th>
 						<th>Alamat</th>
 						<th>Nomor Telepon</th>
-						<th>aksi</th>
+						<th>Aksi</th>
+						<th>Detail</th>
 					</tr>
 				</tfoot>
 			</table>

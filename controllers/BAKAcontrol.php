@@ -19,8 +19,7 @@ class BAKAcontrol extends CI_Controller {
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
 
-	 public function __construct()
-	 {
+	 public function __construct(){
 		 parent::__construct();
 		 $this->load->library('form_validation');
 	 }
@@ -55,7 +54,7 @@ class BAKAcontrol extends CI_Controller {
 				// 'tlp' => '',
 				// 'jenis_kelamin' => '',
 				'foto' => 'default.jpg',
-				'role' => 'kasir',
+				'role' => 'owner',
 				'id_outlet' => '1',
 				'tgl_dibuat' => time(),
 				'is_active' => 1
@@ -71,8 +70,30 @@ class BAKAcontrol extends CI_Controller {
 	 }
 
 	public function index(){
-		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email', [
-			'required' => 'Alamat Email harus diisi !'
+		if($this->session->userdata('is_active')){
+			if($this->session->userdata('role') == 'admin'){
+				redirect('AdminControl/index');
+			}elseif($this->session->userdata('role') == 'kasir'){
+				redirect('KasirControl/index');
+			}elseif($this->session->userdata('role') == 'owner'){
+				redirect('OwnerControl/index');
+			}
+		}
+	}
+
+	public function aksi_login(){
+		if($this->session->userdata('is_active')){
+			if($this->session->userdata('role') == 'admin'){
+				redirect('AdminControl/index');
+			}elseif($this->session->userdata('role') == 'kasir'){
+				redirect('KasirControl/index');
+			}elseif($this->session->userdata('role') == 'owner'){
+				redirect('OwnerControl/index');
+			}
+		}
+		
+		$this->form_validation->set_rules('username', 'Username', 'trim|required', [
+			'required' => 'Nama Pengguna harus diisi !'
 		]);
 		$this->form_validation->set_rules('password', 'Kata Sandi', 'trim|required', [
 			'required' => 'Kata Sandi harus diisi !',
@@ -88,54 +109,90 @@ class BAKAcontrol extends CI_Controller {
 	}
 
 	private function _login(){
-		$email = $this->input->post('email');
+		$username = $this->input->post('username');
 		$password = $this->input->post('password');
 
-		$user = $this->db->get_where('tb_user', ['email' => $email])->row_array();
+		$user = $this->db->get_where('tb_user', ['username' => $username])->row_array();
 		// var_dump($user);
 		// die;
 
 		// jika user ada
 		if($user){
-			// jika user aktif
-			if($user['is_active'] == 1){
+
+			// jika user sedang offline
+			// if($user['is_active'] == 'offline'){
+				
 				// cek password
 				if(password_verify($password, $user['password'])){
 					$data = [
-						'email' => $user['email'],
-						'role' => $user['role']
+						'id' => $user['id'],
+						'username' => $user['username'],
+						'role' => $user['role'],
+						'is_active' => $user['is_active']
 					];
+					// $this->session->sess_expiration = '10';// expires in 4 hours (14400)
 					$this->session->set_userdata($data);
 
 					// cek tipe user
 					if($user['role'] == 'admin'){
+						$log_stat = 'online';
+						$this->db->set('is_active', $log_stat);
+						$this->db->where('id', $this->session->userdata('id'));
+						$this->db->update('tb_user');
+
 						redirect('AdminControl/index');
 					}elseif($user['role'] == 'kasir'){
+						$log_stat = 'online';
+						$this->db->set('is_active', $log_stat);
+						$this->db->where('id', $this->session->userdata('id'));
+						$this->db->update('tb_user');
+
 						redirect('KasirControl/index');
 					}elseif($user['role'] == 'owner'){
+						$log_stat = 'online';
+						$this->db->set('is_active', $log_stat);
+						$this->db->where('id', $this->session->userdata('id'));
+						$this->db->update('tb_user');
+
 						redirect('OwnerControl/index');
 					}
 
 				}else{
 					$this->session->set_flashdata('gagal', 'Kata sandi salah !');
-					redirect('BAKAcontrol/index');
+					redirect('BAKAcontrol/aksi_login');
 				}
-			}else{
-				$this->session->set_flashdata('gagal', 'Email ini belum diaktifkan !');
-				redirect('BAKAcontrol/index');
-			}
+			// }elseif($this->session->userdata('is_active') == 'online'){
+			// 	// jika user online
+			// 	if($this->session->userdata('role') == 'admin'){
+			// 		redirect('AdminControl/index');
+			// 	}elseif($this->session->userdata('role') == 'kasir'){
+			// 		redirect('KasirControl/index');
+			// 	}elseif($this->session->userdata('role') == 'owner'){
+			// 		redirect('OwnerControl/index');
+			// 	}
+			// }
 		}else{
 			// user tidak ada
-			$this->session->set_flashdata('gagal', 'Email ini belum terdaftar !');
-			redirect('BAKAcontrol/index');
+			$this->session->set_flashdata('gagal', 'Nama Pengguna ini belum terdaftar !');
+			redirect('BAKAcontrol/aksi_login');
 		}
 	}
 
 	public function logout(){
-		$this->session->unset_userdata('email');
+		$log_stat = 'offline';
+		$this->db->set('is_active', $log_stat);
+		$this->db->where('id', $this->session->userdata('id'));
+		$this->db->update('tb_user');
+
+		$this->session->unset_userdata('id');
+		$this->session->unset_userdata('username');
 		$this->session->unset_userdata('role');
 
 		$this->session->set_flashdata('sukses', 'Anda sudah berhasil keluar !');
-		redirect('BAKAcontrol/index');
+		redirect('BAKAcontrol/aksi_login');
+	}
+
+	public function block(){
+		$this->load->view('websiteLaundryPBO/blocked');
 	}
 }
