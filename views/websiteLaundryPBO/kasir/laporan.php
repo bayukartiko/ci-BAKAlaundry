@@ -27,64 +27,65 @@
 			<i class="far fa-clock"></i> Data laporan order masuk
 			<br><br>
 			
-			<div class="form-check" style="margin-left: 20px;">
-				<div class="form_row">
-					<div class="col-md-12" style="margin-left: -15px;">
-						<input class="form-check-input" type="radio" name="laporanRadios" id="semuaCabang" value="option1">
-						<label class="form-check-label" for="semuaCabang">
-							Semua cabang
-						</label>
-					</div>
-				</div><br>
-				<div class="form-row">
-					<div class="col-md-2">
-						<input class="form-check-input" type="radio" name="laporanRadios" id="exampleRadios2" value="option2">
-						<label class="form-check-label" for="exampleRadios2">
-							cabang tertentu
-						</label>
-					</div>
-					<div class="col-md-5">
-						<label class="form-check-label" for="cabang">
-							Pilih cabang
-						</label>
-						<select class="form-control" id="cabang" required>
-							<option>Cabang 1</option>
-						</select>
+				<div class="form-check" style="margin-left: 20px;">
+					<div class="form_row">
+						<div class="col-md-12" style="margin-left: -15px;">
+							<input class="form-check-input" type="radio" name="cabangRadios" id="exampleRadios1" value="option1">
+							<label class="form-check-label" for="exampleRadios1">
+								Semua cabang
+							</label>
+						</div>
+					</div><br>
+					<div class="form-row">
+						<div class="col-md-2">
+							<input class="form-check-input" type="radio" name="cabangRadios" id="exampleRadios2" value="option2">
+							<label class="form-check-label" for="exampleRadios2">
+								cabang tertentu
+							</label>
+						</div>
+						<div class="col-md-5">
+							<label class="form-check-label" for="cabang">
+								Pilih cabang
+							</label>
+							<select class="form-control" id="cabang" required>
+								<option>Cabang 1</option>
+							</select>
+						</div>
 					</div>
 				</div>
-				
 
 				<div class="garis"></div>
-
-				<div class="form-row">
-					<div class="col-md-12">
-						<input class="form-check-input" type="radio" name="laporanRadios" id="semuaData" value="option1">
-						<label class="form-check-label" for="semuaData">
-							Semua data
-						</label>
+				
+				<div class="form-check" style="margin-left: 20px;">
+					<div class="form-row">
+						<div class="col-md-12">
+							<input class="form-check-input" type="radio" name="tanggalRadios" id="exampleRadios3" value="option1">
+							<label class="form-check-label" for="exampleRadios3">
+								Semua data
+							</label>
+						</div>
+					</div><br>
+					<div class="form-row">
+						<div class="col-md-2">
+							<input class="form-check-input" type="radio" name="tanggalRadios" id="exampleRadios4" value="option2">
+							<label class="form-check-label" for="exampleRadios4">
+								Tanggal tertentu
+							</label>
+						</div>
+						<div class="col-md-5">
+							<label class="form-check-label" for="dari">
+								Dari tanggal
+							</label>
+							<input name="dari" type="date" value="" class="colorpicker-default form-control" size="12" id="dari">
+						</div>
+						<div class="col-md-5">
+							<label class="form-check-label" for="sampai">
+								Sampai tanggal
+							</label>
+							<input name="sampai" type="date" value="" class="colorpicker-default form-control" size="12" id="sampai">
+						</div>
 					</div>
 				</div><br>
-				<div class="form-row">
-					<div class="col-md-2">
-						<input class="form-check-input" type="radio" name="laporanRadios" id="exampleRadios2" value="option2">
-						<label class="form-check-label" for="exampleRadios2">
-							Tanggal tertentu
-						</label>
-					</div>
-					<div class="col-md-5">
-						<label class="form-check-label" for="dari">
-							Dari tanggal
-						</label>
-						<input name="dari" type="date" value="" class="colorpicker-default form-control" size="12" id="dari">
-					</div>
-					<div class="col-md-5">
-						<label class="form-check-label" for="sampai">
-							Sampai tanggal
-						</label>
-						<input name="sampai" type="date" value="" class="colorpicker-default form-control" size="12" id="sampai">
-					</div>
-				</div>
-			</div><br>
 		
 		<a href="#" target="_blank" class="btn btn-primary">Buat Laporan</a>
 	</div>

@@ -18,7 +18,7 @@
 
 		<div class="isi">
 			<div class="row row-cols-1 row-cols-md-3 text-center">
-				<div class="col mb-4">
+				<div class="col col-md-12 mb-4">
 					<div class="card bg-light h-100">
 						<!-- <img src="..." class="card-img-top" alt="..."> -->
 						<div class="card-body">
@@ -30,7 +30,7 @@
 				</div>
 			</div>
 			<div class="row row-cols-1 row-cols-md-3 text-center">
-				<div class="col mb-4">
+				<div class="col col-md-3 mb-4">
 					<div class="card bg-light h-100">
 						<!-- <img src="..." class="card-img-top" alt="..."> -->
 						<div class="card-body">
@@ -40,7 +40,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col mb-4">
+				<div class="col col-md-3 mb-4">
 					<div class="card bg-light h-100">
 						<!-- <img src="..." class="card-img-top" alt="..."> -->
 						<div class="card-body">
@@ -50,7 +50,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col mb-4">
+				<div class="col col-md-3 mb-4">
 					<div class="card bg-light h-100">
 						<!-- <img src="..." class="card-img-top" alt="..."> -->
 						<div class="card-body">
@@ -60,7 +60,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col mb-4">
+				<div class="col col-md-3 mb-4">
 					<div class="card bg-light h-100">
 						<!-- <img src="..." class="card-img-top" alt="..."> -->
 						<div class="card-body">
@@ -70,20 +70,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="col mb-4">
-					<div class="card bg-light h-100">
-						<!-- <img src="..." class="card-img-top" alt="..."> -->
-						<div class="card-body">
-							<i class="fas fa-store" style="width: 50px;  height: 50px;"></i>
-							<h5 class="card-title">Total Outlet</h5>
-							<p class="card-text"> <?= $h_outlet; ?> </p>
-						</div>
-					</div>
-				</div>
-				
 			</div>
+
 			<div class="row row-cols-1 row-cols-md-3 text-center">
-				<div class="col mb-4">
+				<div class="col col-md-6 mb-4">
 					<div class="card bg-light h-100">
 						<!-- <img src="..." class="card-img-top" alt="..."> -->
 						<div class="card-body">
@@ -93,13 +83,26 @@
 						</div>
 					</div>
 				</div>
-				<div class="col mb-4">
+				<div class="col col-md-6 mb-4">
 					<div class="card bg-light h-100">
 						<!-- <img src="..." class="card-img-top" alt="..."> -->
 						<div class="card-body">
 							<i class="fas fa-shopping-cart" style="width: 50px;  height: 50px;"></i>
 							<h5 class="card-title">Total Semua Order</h5>
 							<p class="card-text"> <?= $h_total_transaksi; ?> </p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row row-cols-1 row-cols-md-3 text-center">
+				<div class="col col-md-12 col-md-3 mb-4">
+					<div class="card bg-light h-100">
+						<!-- <img src="..." class="card-img-top" alt="..."> -->
+						<div class="card-body">
+							<i class="fas fa-store" style="width: 50px;  height: 50px;"></i>
+							<h5 class="card-title">Total Outlet</h5>
+							<p class="card-text"> <?= $h_outlet; ?> </p>
 						</div>
 					</div>
 				</div>

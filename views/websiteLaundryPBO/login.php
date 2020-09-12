@@ -11,13 +11,9 @@
 	<link rel="manifest" href="<?= base_url('assets/img/site.webmanifest')?>">
 	
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <!-- font awesome -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
-    <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
 
     <style>
         html, body {
@@ -132,7 +128,10 @@
 				<?= form_error('username', '<small class="text-danger">', '</small>'); ?>
 
                 <label for="inputSandi" class="sr-only">Kata Sandi</label>
-				<input type="password" id="inputPassword" class="form-control" name="password" placeholder="Kata Sandi (password)"> <span toggle="#inputPassword" class="far fa-eye ikon-mata lihat-password"></span>
+				<input type="password" id="inputPassword" class="form-control" name="password" placeholder="Kata Sandi (password)"> 
+				<div class="lihat-password">
+					<span toggle="#inputPassword" class="ikon-mata far fa-eye"></span>
+				</div>
 				<?= form_error('password', '<small class="text-danger">', '</small>'); ?>
                 <!-- <div class="checkbox mb-3">
                     <label>
@@ -141,32 +140,31 @@
                 </div> -->
                 <input type="submit" class="btn tombolMasuk btn-lg btn-primary btn-block" value="Masuk">
                 <hr>
-                <br>
+                <!-- <br>
                 <del><a href="#">Lupa Password ?</a></del>
                 <br>
-                <del> <a href="#" style="margin-top: 10px; margin-bottom: 5px;">Buat akun baru</a> </del>
+                <del> <a href="#" style="margin-top: 10px; margin-bottom: 5px;">Buat akun baru</a> </del> -->
           </form>
       </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <!-- font awesome -->
-    <script src="https://kit.fontawesome.com/58da37be9c.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <!-- Font Awesome JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js" integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg==" crossorigin="anonymous"></script>
+		<!-- font awesome kit -->
+		<script src="https://kit.fontawesome.com/58da37be9c.js" crossorigin="anonymous"></script>
 
     <script>
-        $(".lihat-password").click(function() {
-
-            $(this).toggleClass("fas fa-eye-slash");
-            var input = $($(this).attr("toggle"));
-                if (input.attr("type") == "password") {
-                    input.attr("type", "text");
-                } else {
-                    input.attr("type", "password");
-                }
-        });
+	$(document).ready(function(){
+		$('.lihat-password').click(function(){
+			$(this).children().toggleClass('far fa-eye far fa-eye-slash');
+			let input = $(this).prev();
+			input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');
+		});
+	});
     </script>
 
   </body>

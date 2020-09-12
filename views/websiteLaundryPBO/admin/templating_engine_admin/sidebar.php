@@ -16,7 +16,8 @@
 				<!-- <i class="fas fa-user-circle"></i> -->
 				<img src="<?= base_url('assets/img/foto/') . $tb_user['foto']; ?>" alt="" srcset="" style="border-radius: 50%; width: 100px; height: 100px;"> <br>
 				<?= $tb_user['nama']; ?> <br>
-				<span class="text-muted">Administrator</span>
+				<span class="text-muted">Administrator</span> <br>
+				<span class="text-muted" style="font-size: 5px;">Semua Cabang</span>
 			</a>
 			<ul class="collapse list-unstyled" id="profilSubmenu">
 				<li>
@@ -55,16 +56,16 @@
 			</ul>
 		</li>
 		<li>
-			<a href="<?php echo site_url('AdminControl/m_member'); ?>"><i class="fas fa-fw fa-user-tag"></i> Member</a>
+			<a href="<?php echo site_url('AdminControl/m_member'); ?>"><i class="fas fa-fw fa-user-tag"></i> Pelanggan</a>
 		</li>
 		<li>
 			<a href="<?php echo site_url('AdminControl/m_laundry'); ?>"><i class="fas fa-fw fa-th-list"></i> Paket Laundry</a>
 		</li>
 		<li>
-			<a href="<?php echo site_url('AdminControl/m_outlet'); ?>"><i class="fas fa-fw fa-store"></i> Outlet</a>
+			<a href="<?php echo site_url('AdminControl/m_outlet'); ?>"><i class="fas fa-fw fa-store"></i> Cabang toko</a>
 		</li>
 		<li>
-			<a href="#"><i class="fas fa-fw fa-shopping-cart"></i></i> Transaksi</a>
+			<a href="<?php echo site_url('AdminControl/m_transaksi'); ?>"><i class="fas fa-fw fa-shopping-cart"></i> Transaksi</a>
 		</li>
 		<li>
 			<a href="<?php echo site_url('AdminControl/laporan'); ?>"><i class="fas fa-fw fa-chart-line"></i> Laporan</a>
@@ -72,6 +73,7 @@
 	</ul>
 
 	<ul class="list-unstyled tentang">
+		<li>
 			<a href="<?php echo site_url('AdminControl/tentang'); ?>" class="btn btn-primary"><i class="fas fa-fw fa-book"></i> Tentang Website ini</a>
 		</li>
 	</ul>

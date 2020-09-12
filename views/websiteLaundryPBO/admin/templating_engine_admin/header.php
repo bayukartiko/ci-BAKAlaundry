@@ -13,17 +13,14 @@
 	<link rel="manifest" href="<?= base_url('assets/img/site.webmanifest')?>">
 
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	
+	<!-- CSS sendiri -->
     <style>
-        /*
-            DEMO STYLE
-        */
-
-		@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand+SC:300,400,500,600,700');
-        @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+		@import url("https://fonts.googleapis.com/css2?family=Patrick+Hand+SC:300,400,500,600,700");
+        @import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Alata', sans-serif;
             background: #dfe6e9;
         }
 			::-webkit-scrollbar {
@@ -97,6 +94,9 @@
             border-bottom: 3px solid #1E272E;
         }
 
+		.select2-rendered__match {
+			text-decoration: underline;
+		}
         /* sidebar */
 
         .wrapper {
@@ -189,14 +189,6 @@
             right: 20px;
             transform: translateY(-50%);
         }
-		/* .caret {
-			-moz-transition: transform 1s;
-			-webkit-transition: transform 1s;
-			transition: transform 1s;
-		}
-		.rotate-180 {
-			transform: rotate(-180deg);
-		} */
 
         ul ul a {
             font-size: 0.9em !important;
@@ -215,11 +207,6 @@
             border-radius: 5px;
             margin-bottom: 5px;
         }
-
-        /* a.download {
-            background: #fff;
-            color: #7386D5;
-        } */
 
         a.article,
         a.article:hover {
@@ -251,9 +238,7 @@
             width: 100%;
         } */
 
-        /* ---------------------------------------------------
-            MEDIAQUERIES
-        ----------------------------------------------------- */
+        /* responsif */
 
         /* @media (max-width: 768px) {
             #sidebar {
@@ -272,20 +257,25 @@
                 display: none;
             }
         } */
-    </style>
-    <!-- Scrollbar Custom CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-    <!-- font awesome -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	</style>
+	
+	<!-- select2 -->
+	<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.css" rel="stylesheet"/> -->
+	<link href="<?= base_url('assets/select2/dist/css/select2.min.css') ?>" rel="stylesheet" />
+	<link href="<?= base_url('assets/select2-bootstrap4/dist/select2-bootstrap4.min.css') ?>" rel="stylesheet" />
 
-    <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <!-- Scrollbar Custom CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+	
+    <!-- font awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
 
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.bootstrap4.min.css">
 
+	<!-- flexdatalist -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-flexdatalist/2.2.4/jquery.flexdatalist.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>

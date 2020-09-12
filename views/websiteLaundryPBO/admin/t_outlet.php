@@ -28,7 +28,8 @@
 					<label for="namacabang">Nama cabang</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="text" class="form-control" id="namacabang" name="nama" placeholder="Masukkan Nama cabang" required>
+					<input type="text" class="form-control" id="namacabang" name="nama" placeholder="Masukkan Nama cabang" value="<?= set_value('nama') ?>">
+					<?= form_error('nama', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
@@ -36,7 +37,9 @@
 					<label for="alamatcabang">Alamat cabang</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="text" class="form-control" id="alamatcabang" name="alamat" placeholder="Masukkan alamat cabang" required>
+					<!-- <input type="text" class="form-control" id="alamatcabang" name="alamat" placeholder="Masukkan alamat cabang" value="/</?= set_value('alamat') ?>"> -->
+					<textarea name="alamat" id="alamat" class="form-control" placeholder="Masukkan Alamat Cabang" cols="30" rows="5"><?= set_value('alamat') ?></textarea>
+					<?= form_error('alamat', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
@@ -44,7 +47,8 @@
 					<label for="tlp">Telepon</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="number" class="form-control" id="tlp" name="telepon" placeholder="Masukkan Telepon" required>
+					<input type="number" class="form-control" id="tlp" name="telepon" placeholder="Masukkan Telepon" value="<?= set_value('telepon') ?>">
+					<?= form_error('telepon', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">

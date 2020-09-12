@@ -28,7 +28,8 @@
 					<label for="namalengkap">Nama Lengkap</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="text" class="form-control" name="nama" id="namalengkap" placeholder="Masukkan Nama Lengkap" required>
+					<input type="text" class="form-control" name="nama" id="namalengkap" placeholder="Masukkan Nama Lengkap" value="<?= set_value('nama') ?>">
+					<?= form_error('nama', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
@@ -36,7 +37,8 @@
 					<label for="username">Nama Pengguna</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="text" class="form-control" name="username" id="username" placeholder="Masukkan Nama Pengguna (username)" required>
+					<input type="text" class="form-control" name="username" id="username" placeholder="Masukkan Nama Pengguna (username)" value="<?= set_value('username') ?>">
+					<?= form_error('username', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
@@ -44,15 +46,17 @@
 					<label for="password">kata sandi</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="password" class="form-control" name="password" id="password" placeholder="Masukkan Kata sandi (password)" required>
+					<input type="password" class="form-control" name="password" id="password" placeholder="Masukkan Kata sandi (password)">
+					<?= form_error('password', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="col-md-2 mb-3 text-right">
-					<label for="email">Alamat Email</label>
+					<label for="email">Email</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="email" class="form-control" name="email" id="email" placeholder="Masukkan Email" required>
+					<input type="email" class="form-control" name="email" id="email" placeholder="Masukkan Email" value="<?= set_value('email') ?>">
+					<?= form_error('email', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
@@ -60,7 +64,8 @@
 					<label for="alamat">Alamat Lengkap</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<textarea name="alamat" id="alamat" class="form-control" placeholder="Masukkan Alamat Kasir" cols="30" rows="5" required></textarea>
+					<textarea name="alamat" id="alamat" class="form-control" placeholder="Masukkan Alamat Kasir" cols="30" rows="5"><?= set_value('alamat') ?></textarea>
+					<?= form_error('alamat', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
@@ -68,7 +73,8 @@
 					<label for="telepon">Telepon</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="number" class="form-control" name="telepon" id="telepon" placeholder="Masukkan No. Telepon" required>
+					<input type="number" class="form-control" name="telepon" id="telepon" placeholder="Masukkan No. Telepon" value="<?= set_value('telepon') ?>">
+					<?= form_error('telepon', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
@@ -76,10 +82,12 @@
 					<label for="gender">Jenis Kelamin</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<select class="form-control" name="gender" id="gender" required>
-						<option>Pria</option>
-						<option>Wanita</option>
+					<select class="form-control" name="gender" id="gender">
+						<option value="" selected disabled>> Pilih Jenis Kelamin <</option>
+						<option value="pria">Pria</option>
+						<option value="wanita">Wanita</option>
 					</select>
+					<?= form_error('gender', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
@@ -116,12 +124,14 @@
 				</div>
 				<div class="col-md-10 mb-3">
 					<select class="form-control" id="cabang" name="cabang">
+						<option value="" selected disabled>> Pilih Cabang Toko <</option>
 						<?php foreach($outlet as $cabang) : ?>
 							<!-- /</?php if( $cabang == $edit->jenis_cabang) { ?> -->
 								<option value="<?= $cabang->id; ?>"><?= $cabang->nama; ?></option>
 							<!-- /</?php }?> -->
 						<?php endforeach; ?>
 					</select>
+					<?= form_error('cabang', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">

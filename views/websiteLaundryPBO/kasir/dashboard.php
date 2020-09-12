@@ -18,47 +18,28 @@
 
 		<div class="isi">
 				<div class="row row-cols-1 row-cols-md-3 text-center">
-					<div class="col mb-4">
+					
+					<div class="col col-md-6 mb-4">
 						<div class="card bg-light h-100">
 							<!-- <img src="..." class="card-img-top" alt="..."> -->
-					<div class="card-body">
-						<i class="fas fa-users" style="width: 50px;  height: 50px;"></i>
-						<h5 class="card-title">Total Member</h5>
-						<p class="card-text">0</p>
+							<div class="card-body">
+								<i class="fas fa-shopping-cart" style="width: 50px;  height: 50px;"></i>
+								<h5 class="card-title">Order Baru</h5>
+								<p class="card-text">0</p>
+							</div>
+						</div>
+					</div>
+					<div class="col col-md-6 mb-4">
+						<div class="card bg-light h-100">
+							<!-- <img src="..." class="card-img-top" alt="..."> -->
+							<div class="card-body">
+								<i class="fas fa-shopping-cart" style="width: 50px;  height: 50px;"></i>
+								<h5 class="card-title">Total Order</h5>
+								<p class="card-text">0</p>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col mb-4">
-				<div class="card bg-light h-100">
-					<!-- <img src="..." class="card-img-top" alt="..."> -->
-					<div class="card-body">
-						<i class="fas fa-users" style="width: 50px;  height: 50px;"></i>
-						<h5 class="card-title">Total Kasir</h5>
-						<p class="card-text">0</p>
-					</div>
-				</div>
-			</div>
-			<div class="col mb-4">
-				<div class="card bg-light h-100">
-					<!-- <img src="..." class="card-img-top" alt="..."> -->
-					<div class="card-body">
-						<i class="fas fa-shopping-cart" style="width: 50px;  height: 50px;"></i>
-						<h5 class="card-title">Order Baru</h5>
-						<p class="card-text">0</p>
-					</div>
-				</div>
-			</div>
-			<div class="col mb-4">
-				<div class="card bg-light h-100">
-					<!-- <img src="..." class="card-img-top" alt="..."> -->
-					<div class="card-body">
-						<i class="fas fa-shopping-cart" style="width: 50px;  height: 50px;"></i>
-						<h5 class="card-title">Total Order</h5>
-						<p class="card-text">0</p>
-					</div>
-				</div>
-			</div>
-		</div>
 		
 		<div class="garis"></div>
 		

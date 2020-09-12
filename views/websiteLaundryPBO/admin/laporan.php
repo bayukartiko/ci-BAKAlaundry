@@ -17,82 +17,93 @@
 	</nav>
 
 	<div class="isi">
-
 		
-		<h6><i class="far fa-clock"></i> Data laporan order masuk</h6>
+		<h6><i class="far fa-clock"></i> Laporan Data Aplikasi</h6>
 		
 		<div class="garis"></div>
 		
 		<div class="tabel">
-			<i class="far fa-clock"></i> Data laporan order masuk
+			<i class="far fa-clock"></i> Laporan Data Aplikasi
 			<br><br>
-			
-			<div class="form-check" style="margin-left: 20px;">
-				<div class="form_row">
-					<div class="col-md-12" style="margin-left: -15px;">
-						<input class="form-check-input" type="radio" name="laporanRadios" id="semuaCabang" value="option1">
-						<label class="form-check-label" for="semuaCabang">
-							Semua cabang
-						</label>
-					</div>
-				</div><br>
-				<div class="form-row">
-					<div class="col-md-2">
-						<input class="form-check-input" type="radio" name="laporanRadios" id="exampleRadios2" value="option2">
-						<label class="form-check-label" for="exampleRadios2">
-							cabang tertentu
-						</label>
-					</div>
-					<div class="col-md-5">
-						<label class="form-check-label" for="cabang">
-							Pilih cabang
-						</label>
-						<select class="form-control" id="cabang" required>
-						<?php foreach($outlet as $cabang) : ?>
-							<!-- /</?php if( $cabang == $edit->jenis_cabang) { ?> -->
-								<option value="<?= $cabang->id; ?>"><?= $cabang->nama; ?></option>
-							<!-- /</?php }?> -->
-						<?php endforeach; ?>
-						</select>
+
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-body">
+							<form action="<?= site_url('AdminControl/run_laporan_pdf'); ?>" method="post" enctype="multipart/form-data">
+								<i class="fas fa-fw fa-file-pdf"></i> Laporan PDF
+								<br><br>
+							
+									<?php if($this->session->flashdata('gagal_pdf')){ ?>
+										<div class="alert alert-danger alert-dismissible fade show" role="alert">
+											<?= $this->session->flashdata('gagal_pdf') ?>
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+									<?php } ?>
+
+								<br>
+								<div class="form-group">
+									<label for="pilih_laporan_data_pdf">Pilih Data</label>
+									<select class="form-control" name="pilih_laporan_data_pdf" id="pilih_laporan_data_pdf" required>
+										<option value="" selected disabled>> Pilih Data <</option>
+										<option value="data_user">Data User</option>
+										<option value="data_pelanggan">Data Pelanggan</option>
+										<option value="data_paket">Data Paket Laundry</option>
+										<option value="data_cabang">Data Cabang Toko</option>
+										<option value="data_transaksi">Data Transaksi</option>
+										<option value="struk_transaksi">Struk Transaksi</option>
+									</select>
+								</div>
+								<div id="chain_data_pdf_1"></div>
+								<div id="chain_data_pdf_2"></div>
+								<div id="chain_data_pdf_3"></div>
+								<button type="submit" class="btn btn-primary">Buat Laporan PDF</button>
+							</form>
+						</div>
 					</div>
 				</div>
-				
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-body">
+							<form action="<?= site_url('AdminControl/run_laporan_xls'); ?>" method="post" enctype="multipart/form-data">
+								<i class="fas fa-file-excel"></i> Laporan XLS
+								<br><br>
+							
+									<?php if($this->session->flashdata('gagal_xls')){ ?>
+										<div class="alert alert-danger alert-dismissible fade show" role="alert">
+											<?= $this->session->flashdata('gagal_xls') ?>
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+									<?php } ?>
 
-				<div class="garis"></div>
-
-				<div class="form-row">
-					<div class="col-md-12">
-						<input class="form-check-input" type="radio" name="laporanRadios" id="semuaData" value="option1">
-						<label class="form-check-label" for="semuaData">
-							Semua data
-						</label>
-					</div>
-				</div><br>
-				<div class="form-row">
-					<div class="col-md-2">
-						<input class="form-check-input" type="radio" name="laporanRadios" id="exampleRadios2" value="option2">
-						<label class="form-check-label" for="exampleRadios2">
-							Tanggal tertentu
-						</label>
-					</div>
-					<div class="col-md-5">
-						<label class="form-check-label" for="dari">
-							Dari tanggal
-						</label>
-						<input name="dari" type="date" value="" class="colorpicker-default form-control" size="12" id="dari">
-					</div>
-					<div class="col-md-5">
-						<label class="form-check-label" for="sampai">
-							Sampai tanggal
-						</label>
-						<input name="sampai" type="date" value="" class="colorpicker-default form-control" size="12" id="sampai">
+								<br>
+								<div class="form-group">
+									<label for="pilih_laporan_data_xls">Pilih Data</label>
+									<select class="form-control" name="pilih_laporan_data_xls" id="pilih_laporan_data_xls" required>
+										<option value="" selected disabled>> Pilih Data <</option>
+										<option value="data_user">Data User</option>
+										<option value="data_pelanggan">Data Pelanggan</option>
+										<option value="data_paket">Data Paket Laundry</option>
+										<option value="data_cabang">Data Cabang Toko</option>
+										<option value="data_transaksi">Data Transaksi</option>
+										<option value="struk_transaksi">Struk Transaksi</option>
+									</select>
+								</div>
+								<div id="chain_data_xls_1"></div>
+								<div id="chain_data_xls_2"></div>
+								<div id="chain_data_xls_3"></div>
+								<button type="submit" class="btn btn-primary">Buat Laporan XLS</button>
+							</form>
+						</div>
 					</div>
 				</div>
-			</div><br>
-		
-		<a href="#" target="_blank" class="btn btn-primary">Buat Laporan</a>
-	</div>
+			</div>
+		</div>
 	
-	<div class="garis"></div>
-</div>
+		<div class="garis"></div>
+	</div>
 </div>

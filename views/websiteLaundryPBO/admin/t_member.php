@@ -11,24 +11,34 @@
 				<i class="fas fa-align-justify"></i>
 			</button> -->
 			<span class="text-left">
-				<a href="<?php echo site_url('AdminControl/home'); ?>">Home</a> / <a href="<?php echo site_url('AdminControl/m_member'); ?>">Manajemen Member</a> / <span class="text-muted">Tambah Member</>
+				<a href="<?php echo site_url('AdminControl/home'); ?>">Home</a> / <a href="<?php echo site_url('AdminControl/m_member'); ?>">Manajemen Pelanggan</a> / <span class="text-muted">Tambah Pelanggan</>
 			</span> 
 		</div>
 	</nav>
 	
 	<div class="isi">
 
-		<h6><i class="fas fa-user-plus"></i> Tambah Data Member</h6>
+		<h6><i class="fas fa-user-plus"></i> Tambah Data Pelanggan</h6>
 		
 		<form class="tabel" action="<?= site_url('AdminControl/simpan_data_member') ?>" method="POST" enctype="multipart/form-data">
-			<p class="text-center mb-5"><i class="fas fa-user-plus"></i> Tambah Data Member</p>
+			<p class="text-center mb-5"><i class="fas fa-user-plus"></i> Tambah Data Pelanggan</p>
 
 			<div class="form-row">
 				<div class="col-md-2 mb-3 text-right">
 					<label for="namalengkap">Nama Lengkap</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="text" class="form-control" name="nama" id="namalengkap" placeholder="Masukkan Nama Lengkap" required>
+					<input type="text" class="form-control" name="nama" id="namalengkap" placeholder="Masukkan Nama Lengkap" value="<?= set_value('nama') ?>">
+					<?= form_error('nama', '<small class="text-danger">', '</small>'); ?>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="col-md-2 mb-3 text-right">
+					<label for="email">Email</label>
+				</div>
+				<div class="col-md-10 mb-3">
+					<input type="email" class="form-control" name="email" id="email" placeholder="Masukkan Email" value="<?= set_value('email') ?>">
+					<?= form_error('email', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
@@ -36,7 +46,8 @@
 					<label for="alamat">Alamat Lengkap</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<textarea name="alamat" id="alamat" class="form-control" placeholder="Masukkan Alamat Member" cols="30" rows="5" required></textarea>
+					<textarea name="alamat" id="alamat" class="form-control" placeholder="Masukkan Alamat Pelanggan" cols="30" rows="5"> <?= set_value('alamat') ?> </textarea>
+					<?= form_error('alamat', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
@@ -44,7 +55,8 @@
 					<label for="telepon">Telepon</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<input type="number" class="form-control" name="telepon" id="telepon" placeholder="Masukkan No. Telepon" required>
+					<input type="number" class="form-control" name="telepon" id="telepon" placeholder="Masukkan No. Telepon" value="<?= set_value('telepon') ?>">
+					<?= form_error('telepon', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">
@@ -52,10 +64,11 @@
 					<label for="gender">Jenis Kelamin</label>
 				</div>
 				<div class="col-md-10 mb-3">
-					<select class="form-control" name="gender" id="gender" required>
+					<select class="form-control" name="gender" id="gender">
 						<option>Pria</option>
 						<option>Wanita</option>
 					</select>
+					<?= form_error('gender', '<small class="text-danger">', '</small>'); ?>
 				</div>
 			</div>
 			<div class="form-row">

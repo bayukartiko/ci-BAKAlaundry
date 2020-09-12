@@ -11,7 +11,7 @@
 				<i class="fas fa-align-justify"></i>
 			</button> -->
 			<span class="text-left">
-				<a href="<?php echo site_url('AdminControl/home'); ?>">Home</a> / <span class="text-muted">Profil</span> / <span class="text-muted">Ubah Password</span>
+				<a href="<?php echo site_url('AdminControl/home'); ?>">Home</a> / <span class="text-muted">Profil</span> / <span class="text-muted">Ubah Kata Sandi</span>
 			</span> 
 		</div>
 	</nav>

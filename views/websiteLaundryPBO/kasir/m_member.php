@@ -20,7 +20,7 @@
 
 		<h6><i class="fas fa-user"></i> Manajemen Data Member</h6>
 		<div class="row row-cols-1 row-cols-md-3 text-center">
-			<div class="col mb-4">
+			<div class="col col-md-12 mb-4">
 				<div class="card bg-light h-100">
 					<!-- <img src="..." class="card-img-top" alt="..."> -->
 					<div class="card-body">

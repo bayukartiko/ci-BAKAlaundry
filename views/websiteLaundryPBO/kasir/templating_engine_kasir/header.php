@@ -6,21 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>BAKA Laundry</title>
+	<title>BAKA Laundry</title>
+	<link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('assets/img/apple-touch-icon.png')?>">
+	<link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/img/favicon-32x32.png')?>">
+	<link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/img/favicon-16x16.png')?>">
+	<link rel="manifest" href="<?= base_url('assets/img/site.webmanifest')?>">
 
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	
+	<!-- CSS sendiri -->
     <style>
-        /*
-            DEMO STYLE
-        */
-
+		@import "https://fonts.googleapis.com/css2?family=Patrick+Hand+SC:300,400,500,600,700";
         @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
         body {
             font-family: 'Poppins', sans-serif;
             background: #dfe6e9;
         }
+			::-webkit-scrollbar {
+				width: 10px;
+			}
+
+			/* Track */
+			::-webkit-scrollbar-track {
+				background: #f1f1f1; 
+			}
+			
+			/* Handle */
+			::-webkit-scrollbar-thumb {
+				background: #888; 
+			}
+
+			/* Handle on hover */
+			::-webkit-scrollbar-thumb:hover {
+				background: #555; 
+			}
+
         h1,h2,h4,h5,h6{
             color: #2d3436;
         }
@@ -91,6 +112,24 @@
             color: #fff;
             transition: all 0.3s;
         }
+			#sidebar::-webkit-scrollbar {
+				width: 5px;
+			}
+
+			/* Track */
+			#sidebar::-webkit-scrollbar-track {
+				background: #f1f1f1; 
+			}
+			
+			/* Handle */
+			#sidebar::-webkit-scrollbar-thumb {
+				background: #888; 
+			}
+
+			/* Handle on hover */
+			#sidebar::-webkit-scrollbar-thumb:hover {
+				background: #555; 
+			}
 
         #sidebar.active {
             margin-left: -250px;
@@ -99,6 +138,8 @@
         #sidebar .sidebar-header {
             padding: 20px;
             background: #485460;
+			font-family: 'Patrick Hand SC', cursive;
+			text-align: center;
         }
 
         #sidebar ul.components {
@@ -163,11 +204,6 @@
             margin-bottom: 5px;
         }
 
-        /* a.download {
-            background: #fff;
-            color: #7386D5;
-        } */
-
         a.article,
         a.article:hover {
             background: #6d7fcc !important;
@@ -198,9 +234,7 @@
             width: 100%;
         } */
 
-        /* ---------------------------------------------------
-            MEDIAQUERIES
-        ----------------------------------------------------- */
+        /* responsif */
 
         /* @media (max-width: 768px) {
             #sidebar {
@@ -219,7 +253,8 @@
                 display: none;
             }
         } */
-    </style>
+	</style>
+	
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <!-- font awesome -->
@@ -233,6 +268,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/rowreorder/1.2.7/css/rowReorder.bootstrap4.min.css">
 
+	<!-- flexdatalist -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-flexdatalist/2.2.4/jquery.flexdatalist.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>

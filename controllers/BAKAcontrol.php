@@ -109,8 +109,8 @@ class BAKAcontrol extends CI_Controller {
 	}
 
 	private function _login(){
-		$username = $this->input->post('username');
-		$password = $this->input->post('password');
+		$username = $this->input->post('username', true);
+		$password = $this->input->post('password', true);
 
 		$user = $this->db->get_where('tb_user', ['username' => $username])->row_array();
 		// var_dump($user);
