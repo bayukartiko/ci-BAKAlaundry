@@ -116,7 +116,7 @@ class AdminControl extends CI_Controller {
 			
 			$data['gender'] = ['pria','wanita'];
 			$data['outlet'] = $this->AdminModel->get_db_outlet();
-			$data['tb_user'] = $this->AdminModel->get_db_kasir();
+			$data['tb_user'] = $this->AdminModel->show_kasir();
 			$data['h_kasir'] = $this->AdminModel->h_kasir();
 
 			$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
@@ -139,7 +139,7 @@ class AdminControl extends CI_Controller {
 
 			$data['gender'] = ['pria','wanita'];
 			$data['outlet'] = $this->AdminModel->get_db_outlet();
-			$data['tb_user'] = $this->AdminModel->get_db_owner();
+			$data['tb_user'] = $this->AdminModel->show_owner();
 			$data['h_owner'] = $this->AdminModel->h_owner();
 
 			$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
@@ -162,7 +162,7 @@ class AdminControl extends CI_Controller {
 
 			$data['outlet'] = $this->AdminModel->get_db_outlet();
 			$data['gender'] = ['pria','wanita'];
-			$data['tb_member'] = $this->AdminModel->get_db_member();
+			$data['tb_member'] = $this->AdminModel->show_member();
 			$data['h_member'] = $this->AdminModel->h_member();
 
 			$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
@@ -183,9 +183,9 @@ class AdminControl extends CI_Controller {
 		public function m_laundry(){
 			$dataS['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
 
-			$data['tb_paket'] = $this->AdminModel->get_db_paket();
+			$data['tb_paket'] = $this->AdminModel->show_paket();
 			$data['h_paket'] = $this->AdminModel->h_paket();
-			$data['outlet'] = $this->AdminModel->get_db_outlet();
+			$data['outlet'] = $this->AdminModel->show_outlet();
 			$data['jenis'] = $this->AdminModel->get_jenis_paket();
 			$data['satuan'] = $this->AdminModel->get_jenis_satuan();
 
@@ -210,7 +210,7 @@ class AdminControl extends CI_Controller {
 			$dataS['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
 
 			// $data['data_edit_outlet'] = $this->AdminModel->get_data_edit_db_outlet($id);
-			$data['tb_outlet'] = $this->AdminModel->get_db_outlet();
+			$data['tb_outlet'] = $this->AdminModel->show_outlet();
 			$data['h_outlet'] = $this->AdminModel->h_outlet();
 
 			$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
@@ -229,16 +229,22 @@ class AdminControl extends CI_Controller {
 		public function m_transaksi(){
 			$dataS['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
 
-			$data['paket'] = $this->AdminModel->get_db_paket();
-			$data['member'] = $this->AdminModel->get_db_member();
-			$data['outlet'] = $this->AdminModel->get_db_outlet();
-			$data['tb_member'] = $this->AdminModel->get_db_member();
-			$data['tb_paket'] = $this->AdminModel->get_db_paket();
-			$data['tb_transaksi'] = $this->AdminModel->get_db_transaksi();
+			$data['paket'] = $this->AdminModel->show_paket();
+			$data['member'] = $this->AdminModel->show_member();
+			$data['outlet'] = $this->AdminModel->show_outlet();
+			$data['tb_user'] = $this->AdminModel->show_user();
+			$data['tb_member'] = $this->AdminModel->show_member();
+			$data['tb_paket'] = $this->AdminModel->show_paket();
+			$data['tb_transaksi'] = $this->AdminModel->show_transaksi();
 			$data['status_order'] = $this->AdminModel->get_status_order();
 			$data['status_dibayar'] = $this->AdminModel->get_status_dibayar();
 			$data['h_transaksi_baru'] = $this->AdminModel->h_transaksi_baru();
-			$data['h_total_transaksi'] = $this->AdminModel->h_total_transaksi();
+			$data['h_transaksi_semua'] = $this->AdminModel->h_total_transaksi();
+
+			$mentah = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			$data['kode_nuklir'] = substr(str_shuffle($mentah), 0, 15);
+			$data['h_paket'] = $this->AdminModel->h_paket();
+			$data['h_member'] = $this->AdminModel->h_member();
 
 			$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
 			$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/sidebar', $dataS);
@@ -282,148 +288,187 @@ class AdminControl extends CI_Controller {
 			$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/footer', $data);
 		}
 
-	// pengolahan data member
-		// tambah
-			public function simpan_data_member(){
-				$this->form_validation->set_rules('nama', 'Nama' , 'required|trim', [
-					'required' => 'Nama harus diisi !'
-				]);
-				$this->form_validation->set_rules('email', 'Email' , 'required|trim|valid_email', [
-					'required' => 'Email harus diisi !',
-					'valid_email' => 'Email tidak benar !'
-				]);
-				$this->form_validation->set_rules('alamat', 'Alamat' , 'required|trim', [
-					'required' => 'Alamat harus diisi !'
-				]);
-				$this->form_validation->set_rules('telepon', 'No.Telepon' , 'required|trim|numeric', [
-					'required' => 'No.Telepon harus diisi !',
-					'numeric' => 'Isi no telepon harus angka !'
-				]);
-				$this->form_validation->set_rules('gender', 'Jenis Kelamin' , 'required|trim', [
-					'required' => 'Jenis kelamin harus dipilih !'
-				]);
+	// pengolahan data member {sudah pakai ajax}
+		public function read_member(){
+			$data = $this->AdminModel->show_member();
+			echo json_encode($data);
+		}
+		public function crud_member($mode, $id){
+			if($mode == 'simpan'){
+				if($this->input->is_ajax_request()){
+					if($this->AdminModel->validation_user_member()){
+						$this->AdminModel->crud_member('simpan', null); // panggil fungsi crud_member() di AdminModel
+
+						// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+						$data['outlet'] = $this->AdminModel->get_db_outlet();
+						$data['gender'] = ['pria','wanita'];
+						$data['tb_member'] = $this->AdminModel->show_member();
+						$data['h_member'] = $this->AdminModel->h_member();
+
+						$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_member', $data, true);
+						$hitung_member = $data['h_member'] = $this->AdminModel->h_member();
+
+						$callback = array(
+							'status'=>'sukses',
+							'pesan'=>'Data berhasil disimpan',
+							'html'=>$html,
+							'hitung_member'=>$hitung_member
+						);
+					}else{
+						$callback = array(
+							'status'=>'gagal',
+							'pesan'=>validation_errors()
+						);
+					}
+				}
+				echo json_encode($callback);
+
+			}elseif($mode == 'hapus'){
+				if($this->input->is_ajax_request()){
+					$this->AdminModel->crud_member('hapus', $id); // panggil fungsi crud_member() di AdminModel
+
+					// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+					$data['outlet'] = $this->AdminModel->get_db_outlet();
+					$data['gender'] = ['pria','wanita'];
+					$data['tb_member'] = $this->AdminModel->show_member();
+					$data['h_member'] = $this->AdminModel->h_member();
+
+					$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_member', $data, true);
+					// $html = $this->load->view('websiteLaundryPBO/admin/m_member', $data, true);
+					$hitung_member = $data['h_member'] = $this->AdminModel->h_member();
+
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Data berhasil dihapus',
+						'html'=>$html,
+						'hitung_member'=>$hitung_member
+					);
+				}else{
+					$callback = array(
+						'status'=>'gagal'
+					);
+				}
+				echo json_encode($callback);
 				
-				if($this->form_validation->run() == false){
-					$this->t_member();
+			}elseif($mode == 'ubah'){
+				if($this->input->is_ajax_request()){
+					$this->AdminModel->crud_member('ubah', $id); // panggil fungsi crud_member() di AdminModel
+
+					// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+					$data['outlet'] = $this->AdminModel->get_db_outlet();
+					$data['gender'] = ['pria','wanita'];
+					$data['tb_member'] = $this->AdminModel->show_member();
+					$data['h_member'] = $this->AdminModel->h_member();
+
+					$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_member', $data, true);
+					$hitung_member = $data['h_member'] = $this->AdminModel->h_member();
+
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Data berhasil diubah',
+						'html'=>$html,
+						'hitung_member'=>$hitung_member
+					);
 				}else{
-					$this->AdminModel->simpan_db_member();
-					$this->session->set_flashdata('sukses', 'ditambahkan.');
-					redirect('AdminControl/m_member');
+					$callback = array(
+						'status'=>'gagal',
+						'pesan'=>validation_errors()
+					);
 				}
+				echo json_encode($callback);
 			}
-		// edit
-			public function edit_data_member($id){
-				$datap['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
+		}
 
-				$data['gender'] = ['pria','wanita'];
-				$data['outlet'] = $this->AdminModel->get_db_outlet();
-				$data['tb_member'] = $this->AdminModel->get_db_member();
-				$data['h_member'] = $this->AdminModel->h_member();
-				$data['data_edit_member'] = $this->AdminModel->get_data_edit_db_member($id);
+	// pengolahan data kasir {sudah pakai ajax}
+		public function read_kasir(){
+			$data = $this->AdminModel->show_kasir();
+			echo json_encode($data);
+		}
+		public function crud_kasir($mode, $id){
+			if($mode == 'simpan'){
+				if($this->input->is_ajax_request()){
+					if($this->AdminModel->validation_user_kasir()){
+						$this->AdminModel->crud_kasir('simpan', null); // panggil fungsi crud_kasir() di AdminModel
 
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/sidebar', $datap);
-				$this->load->view('websiteLaundryPBO/admin/e_member', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/footer', $data);
-			}
-			public function aksi_edit_member(){
-				$this->AdminModel->edit_db_member();
-				$this->session->set_flashdata('sukses', 'diubah.');
-				redirect('AdminControl/m_member');
-			}
-		// hapus
-			public function hapus_data_member($id){
-				$this->AdminModel->hapus_db_member($id);
-				$this->session->set_flashdata('sukses', 'dihapus.');
-				redirect('AdminControl/m_member');
-			}
-	// pengolahan data kasir
-		// tambah
-			public function simpan_data_kasir(){
-				$this->form_validation->set_rules('nama', 'Nama' , 'required|trim', [
-					'required' => 'Nama harus diisi !'
-				]);
-				$this->form_validation->set_rules('username', 'Username', 'trim|required|is_unique[tb_user.username]', [
-					'required' => 'Nama Pengguna harus diisi !',
-					'is_unique' => 'Nama Pengguna ini sudah terdaftar !'
-				]);
-				$this->form_validation->set_rules('password', 'Password' , 'required|trim|min_length[3]', [
-					'required' => 'Kata Sandi harus diisi !',
-					'min_length' => 'kata sandi terlalu pendek !'
-				]);
-				$this->form_validation->set_rules('email', 'Email' , 'required|trim|valid_email', [
-					'required' => 'Email harus diisi !',
-					'valid_email' => 'Email tidak benar !'
-				]);
-				$this->form_validation->set_rules('alamat', 'Alamat' , 'required|trim', [
-					'required' => 'Alamat harus diisi !'
-				]);
-				$this->form_validation->set_rules('telepon', 'No.Telepon' , 'required|trim|numeric', [
-					'required' => 'No.Telepon harus diisi !',
-					'numeric' => 'Isi no telepon harus angka !'
-				]);
-				$this->form_validation->set_rules('gender', 'Jenis Kelamin' , 'required|trim', [
-					'required' => 'Jenis kelamin harus dipilih !'
-				]);
-				$this->form_validation->set_rules('cabang', 'Cabang' , 'required|trim', [
-					'required' => 'Cabang toko harus dipilih !'
-				]);
-		
-				if($this->form_validation->run() == false){
-					$this->t_kasir();
+						// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+						$data['gender'] = ['pria','wanita'];
+						$data['outlet'] = $this->AdminModel->get_db_outlet();
+						$data['tb_user'] = $this->AdminModel->show_kasir();
+						$data['h_kasir'] = $this->AdminModel->h_kasir();
+
+						$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_kasir', $data, true);
+						$hitung_kasir = $data['h_kasir'] = $this->AdminModel->h_kasir();
+
+						$callback = array(
+							'status'=>'sukses',
+							'pesan'=>'Data berhasil disimpan',
+							'html'=>$html,
+							'hitung_kasir'=>$hitung_kasir
+						);
+					}else{
+						$callback = array(
+							'status'=>'gagal',
+							'pesan'=>validation_errors()
+						);
+					}
+				}
+				echo json_encode($callback);
+
+			}elseif($mode == 'hapus'){
+				if($this->input->is_ajax_request()){
+					$this->AdminModel->crud_kasir('hapus', $id); // panggil fungsi crud_kasir() di AdminModel
+
+					// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+					$data['gender'] = ['pria','wanita'];
+					$data['outlet'] = $this->AdminModel->get_db_outlet();
+					$data['tb_user'] = $this->AdminModel->show_kasir();
+					$data['h_kasir'] = $this->AdminModel->h_kasir();
+
+					$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_kasir', $data, true);
+					// $html = $this->load->view('websiteLaundryPBO/admin/m_kasir', $data, true);
+					$hitung_kasir = $data['h_kasir'] = $this->AdminModel->h_kasir();
+
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Data berhasil dihapus',
+						'html'=>$html,
+						'hitung_kasir'=>$hitung_kasir
+					);
 				}else{
-					$this->AdminModel->simpan_db_kasir();
-					$this->session->set_flashdata('sukses', 'ditambahkan.');
-					redirect('AdminControl/m_kasir');
+					$callback = array(
+						'status'=>'gagal'
+					);
 				}
+				echo json_encode($callback);
+				
+			}elseif($mode == 'ubah'){
+				if($this->input->is_ajax_request()){
+					$this->AdminModel->crud_kasir('ubah', $id); // panggil fungsi crud_kasir() di AdminModel
+
+					// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+					$data['gender'] = ['pria','wanita'];
+					$data['outlet'] = $this->AdminModel->get_db_outlet();
+					$data['tb_user'] = $this->AdminModel->show_kasir();
+					$data['h_kasir'] = $this->AdminModel->h_kasir();
+
+					$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_kasir', $data, true);
+					$hitung_kasir = $data['h_kasir'] = $this->AdminModel->h_kasir();
+
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Data berhasil diubah',
+						'html'=>$html,
+						'hitung_kasir'=>$hitung_kasir
+					);
+				}else{
+					$callback = array(
+						'status'=>'gagal',
+						'pesan'=>validation_errors()
+					);
+				}
+				echo json_encode($callback);
 			}
-
-		// detail	
-			public function detail_data_kasir($id){
-				$datap['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
-
-				$this->load->model('AdminModel');
-				$data['outlet'] = $this->AdminModel->get_db_outlet();
-				$detail_db = $this->AdminModel->detail_db_kasir($id);
-				$data['detail'] = $detail_db;
-				//redirect('AdminControl/m_kasir');
-
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/sidebar', $datap);
-				$this->load->view('websiteLaundryPBO/admin/detail_data_user/d_kasir', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/footer', $data);
-			}
-
-		// hapus
-			public function hapus_data_kasir($id){
-				$this->AdminModel->hapus_db_kasir($id);
-				$this->session->set_flashdata('sukses', 'dihapus.');
-				redirect('AdminControl/m_kasir');
-			}
-		
-		// edit
-			public function edit_data_kasir($id){
-				// $this->AdminModel->edit_db_kasir($id);
-				// redirect('AdminControl/m_kasir');
-
-				$datap['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
-
-				$data['gender'] = ['pria','wanita'];
-				$data['outlet'] = $this->AdminModel->get_db_outlet();
-				$data['tb_user'] = $this->AdminModel->get_db_kasir();
-				$data['h_kasir'] = $this->AdminModel->h_kasir();
-				$data['data_edit_kasir'] = $this->AdminModel->get_data_edit_db_kasir($id);
-
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/sidebar', $datap);
-				$this->load->view('websiteLaundryPBO/admin/e_kasir', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/footer', $data);
-			}
-			public function aksi_edit_kasir(){
-				$this->AdminModel->edit_db_kasir();
-				$this->session->set_flashdata('sukses', 'diubah.');
-				redirect('AdminControl/m_kasir');
-			}
+		}
 
 	// pengolahan data admin
 		public function detail_data_admin($id){
@@ -441,178 +486,310 @@ class AdminControl extends CI_Controller {
 			$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/footer', $data);
 		}
 
-	// pengolahan data owner
-		// tambah
-			public function simpan_data_owner(){
-				$this->form_validation->set_rules('nama', 'Nama' , 'required|trim', [
-					'required' => 'Nama harus diisi !'
-				]);
-				$this->form_validation->set_rules('username', 'Username', 'trim|required|is_unique[tb_user.username]', [
-					'required' => 'Nama Pengguna harus diisi !',
-					'is_unique' => 'Nama Pengguna ini sudah terdaftar !'
-				]);
-				$this->form_validation->set_rules('password', 'Password' , 'required|trim|min_length[3]', [
-					'required' => 'Kata Sandi harus diisi !',
-					'min_length' => 'kata sandi terlalu pendek !'
-				]);
-				$this->form_validation->set_rules('email', 'Email' , 'required|trim|valid_email', [
-					'required' => 'Email harus diisi !',
-					'valid_email' => 'Email tidak benar !'
-				]);
-				$this->form_validation->set_rules('alamat', 'Alamat' , 'required|trim', [
-					'required' => 'Alamat harus diisi !'
-				]);
-				$this->form_validation->set_rules('telepon', 'No.Telepon' , 'required|trim|numeric', [
-					'required' => 'No.Telepon harus diisi !',
-					'numeric' => 'Isi no telepon harus angka !'
-				]);
-				$this->form_validation->set_rules('gender', 'Jenis Kelamin' , 'required|trim', [
-					'required' => 'Jenis kelamin harus dipilih !'
-				]);
-				$this->form_validation->set_rules('cabang', 'Cabang' , 'required|trim', [
-					'required' => 'Cabang toko harus dipilih !'
-				]);
-		
-				if($this->form_validation->run() == false){
-					$this->t_owner();
-				}else{
-					$this->AdminModel->simpan_db_owner();
-					$this->session->set_flashdata('sukses', 'ditambahkan.');
-					redirect('AdminControl/m_owner');
+	// pengolahan data owner {sudah pakai ajax}
+		public function read_owner(){
+			$data = $this->AdminModel->show_owner();
+			echo json_encode($data);
+		}
+		public function crud_owner($mode, $id){
+			if($mode == 'simpan'){
+				if($this->input->is_ajax_request()){
+					if($this->AdminModel->validation_user_owner()){
+						$this->AdminModel->crud_owner('simpan', null); // panggil fungsi crud_owner() di AdminModel
+
+						// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+						$data['gender'] = ['pria','wanita'];
+						$data['outlet'] = $this->AdminModel->get_db_outlet();
+						$data['tb_user'] = $this->AdminModel->show_owner();
+						$data['h_owner'] = $this->AdminModel->h_owner();
+
+						$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_owner', $data, true);
+						$hitung_owner = $data['h_owner'] = $this->AdminModel->h_owner();
+
+						$callback = array(
+							'status'=>'sukses',
+							'pesan'=>'Data berhasil disimpan',
+							'html'=>$html,
+							'hitung_owner'=>$hitung_owner
+						);
+					}else{
+						$callback = array(
+							'status'=>'gagal',
+							'pesan'=>validation_errors()
+						);
+					}
 				}
-			}
+				echo json_encode($callback);
 
-		// detail
-			public function detail_data_owner($id){
-				$datap['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
+			}elseif($mode == 'hapus'){
+				if($this->input->is_ajax_request()){
+					$this->AdminModel->crud_owner('hapus', $id); // panggil fungsi crud_owner() di AdminModel
 
-				$this->load->model('AdminModel');
-				$data['outlet'] = $this->AdminModel->get_db_outlet();
-				$detail_db = $this->AdminModel->detail_db_owner($id);
-				$data['detail'] = $detail_db;
-				//redirect('AdminControl/m_kasir');
+					// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+					$data['gender'] = ['pria','wanita'];
+					$data['outlet'] = $this->AdminModel->get_db_outlet();
+					$data['tb_user'] = $this->AdminModel->show_owner();
+					$data['h_owner'] = $this->AdminModel->h_owner();
 
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/sidebar', $datap);
-				$this->load->view('websiteLaundryPBO/admin/detail_data_user/d_owner', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/footer', $data);
-			}
+					$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_owner', $data, true);
+					// $html = $this->load->view('websiteLaundryPBO/admin/m_owner', $data, true);
+					$hitung_owner = $data['h_owner'] = $this->AdminModel->h_owner();
 
-		// hapus
-			public function hapus_data_owner($id){
-				$this->AdminModel->hapus_db_owner($id);
-				$this->session->set_flashdata('sukses', 'dihapus.');
-				redirect('AdminControl/m_owner');
-			}
-
-		// edit
-			public function edit_data_owner($id){
-				// $this->AdminModel->edit_db_kasir($id);
-				// redirect('AdminControl/m_kasir');
-
-				$datap['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
-
-				$data['gender'] = ['pria','wanita'];
-				$data['outlet'] = $this->AdminModel->get_db_outlet();
-				$data['tb_user'] = $this->AdminModel->get_db_owner();
-				$data['h_owner'] = $this->AdminModel->h_owner();
-				$data['data_edit_owner'] = $this->AdminModel->get_data_edit_db_owner($id);
-
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/sidebar', $datap);
-				$this->load->view('websiteLaundryPBO/admin/e_owner', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/footer', $data);
-			}
-			public function aksi_edit_owner(){
-				$this->AdminModel->edit_db_owner();
-				$this->session->set_flashdata('sukses', 'diubah.');
-				redirect('AdminControl/m_owner');
-			}	
-	
-	// pengolahan data paket
-		// tambah
-			public function simpan_data_paket(){
-				$this->AdminModel->simpan_db_paket();
-				$this->session->set_flashdata('sukses', 'ditambahkan.');
-				redirect('AdminControl/m_laundry');
-			}
-		// hapus
-			public function hapus_data_paket($id){
-				$this->AdminModel->hapus_db_paket($id);
-				$this->session->set_flashdata('sukses', 'dihapus.');
-				redirect('AdminControl/m_laundry');
-			}
-		// edit
-			public function edit_data_paket($id){
-				// $this->AdminModel->edit_db_kasir($id);
-				// redirect('AdminControl/m_kasir');
-
-				$datap['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
-
-				$data['jenis'] = $this->AdminModel->get_jenis_paket();
-				$data['outlet'] = $this->AdminModel->get_db_outlet();
-				$data['tb_paket'] = $this->AdminModel->get_db_paket();
-				$data['h_paket'] = $this->AdminModel->h_paket();
-				$data['data_edit_paket'] = $this->AdminModel->get_data_edit_db_paket($id);
-
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/sidebar', $datap);
-				$this->load->view('websiteLaundryPBO/admin/e_paket', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/footer', $data);
-			}
-			public function aksi_edit_paket(){
-				$this->AdminModel->edit_db_paket();
-				$this->session->set_flashdata('sukses', 'diubah.');
-				redirect('AdminControl/m_laundry');
-			}	
-
-	// pengolahan data outlet
-		// tambah
-			public function simpan_data_outlet(){
-				$this->form_validation->set_rules('nama', 'Nama' , 'required|trim|is_unique[tb_outlet.nama]', [
-					'required' => 'Nama harus diisi !',
-					'is_unique' => 'Cabang ini sudah tersedia !'
-				]);
-				$this->form_validation->set_rules('alamat', 'Alamat' , 'required|trim', [
-					'required' => 'Alamat harus diisi !'
-				]);
-				$this->form_validation->set_rules('telepon', 'No.Telepon' , 'required|trim|numeric', [
-					'required' => 'No.Telepon harus diisi !',
-					'numeric' => 'Isi no telepon harus angka !'
-				]);
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Data berhasil dihapus',
+						'html'=>$html,
+						'hitung_owner'=>$hitung_owner
+					);
+				}else{
+					$callback = array(
+						'status'=>'gagal'
+					);
+				}
+				echo json_encode($callback);
 				
-				if($this->form_validation->run() == false){
-					$this->t_outlet();
+			}elseif($mode == 'ubah'){
+				if($this->input->is_ajax_request()){
+					$this->AdminModel->crud_owner('ubah', $id); // panggil fungsi crud_owner() di AdminModel
+
+					// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+					$data['gender'] = ['pria','wanita'];
+					$data['outlet'] = $this->AdminModel->get_db_outlet();
+					$data['tb_user'] = $this->AdminModel->show_owner();
+					$data['h_owner'] = $this->AdminModel->h_owner();
+
+					$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_owner', $data, true);
+					$hitung_owner = $data['h_owner'] = $this->AdminModel->h_owner();
+
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Data berhasil diubah',
+						'html'=>$html,
+						'hitung_owner'=>$hitung_owner
+					);
 				}else{
-					$this->AdminModel->simpan_db_outlet();
-					$this->session->set_flashdata('sukses', 'ditambahkan.');
-					redirect('AdminControl/m_outlet');
+					$callback = array(
+						'status'=>'gagal',
+						'pesan'=>validation_errors()
+					);
 				}
+				echo json_encode($callback);
 			}
-		// edit
-			public function edit_data_outlet($id){
-				// $this->AdminModel->edit_db_kasir($id);
-				// redirect('AdminControl/m_kasir');
+		}
+	
+	// pengolahan data paket {sudah pakai ajax}
+		public function read_paket(){
+			$data = $this->AdminModel->show_paket();
+			echo json_encode($data);
+		}
+		public function crud_paket($mode, $id){
+			if($mode == 'simpan'){
+				if($this->input->is_ajax_request()){
+					if($this->AdminModel->validation_paket()){
+						$this->AdminModel->crud_paket('simpan', null); // panggil fungsi crud_paket() di AdminModel
 
-				$datap['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
+						// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+						$data['tb_paket'] = $this->AdminModel->show_paket();
+						$data['h_paket'] = $this->AdminModel->h_paket();
+						$data['outlet'] = $this->AdminModel->show_outlet();
+						$data['jenis'] = $this->AdminModel->get_jenis_paket();
+						$data['satuan'] = $this->AdminModel->get_jenis_satuan();
 
-				$data['jenis_outlet'] = ['pakaian','bed cover','boneka','jasa setrika','cuci karpet'];
-				$data['tb_outlet'] = $this->AdminModel->get_db_outlet();
-				$data['h_outlet'] = $this->AdminModel->h_outlet();
-				$data['data_edit_outlet'] = $this->AdminModel->get_data_edit_db_outlet($id);
+						$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_paket', $data, true);
+						$hitung_paket = $data['h_paket'] = $this->AdminModel->h_paket();
 
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/sidebar', $datap);
-				$this->load->view('websiteLaundryPBO/admin/e_outlet', $data);
-				$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/footer', $data);
+						$callback = array(
+							'status'=>'sukses',
+							'pesan'=>'Paket laundry berhasil disimpan',
+							'html'=>$html,
+							'hitung_paket'=>$hitung_paket
+						);
+					}else{
+						$callback = array(
+							'status'=>'gagal',
+							'pesan'=>validation_errors()
+						);
+					}
+				}
+				echo json_encode($callback);
+
+			}elseif($mode == 'hapus'){
+				if($this->input->is_ajax_request()){
+					$this->AdminModel->crud_paket('hapus', $id); // panggil fungsi crud_paket() di AdminModel
+
+					// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+					$data['tb_paket'] = $this->AdminModel->show_paket();
+					$data['h_paket'] = $this->AdminModel->h_paket();
+					$data['outlet'] = $this->AdminModel->show_outlet();
+					$data['jenis'] = $this->AdminModel->get_jenis_paket();
+					$data['satuan'] = $this->AdminModel->get_jenis_satuan();
+
+					$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_paket', $data, true);
+					// $html = $this->load->view('websiteLaundryPBO/admin/m_paket', $data, true);
+					$hitung_paket = $data['h_paket'] = $this->AdminModel->h_paket();
+
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Paket Laundry berhasil dihapus',
+						'html'=>$html,
+						'hitung_paket'=>$hitung_paket
+					);
+				}else{
+					$callback = array(
+						'status'=>'gagal'
+					);
+				}
+				echo json_encode($callback);
+				
+			}elseif($mode == 'ubah'){
+				if($this->input->is_ajax_request()){
+					$this->AdminModel->crud_paket('ubah', $id); // panggil fungsi crud_paket() di AdminModel
+
+					// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+					$data['tb_paket'] = $this->AdminModel->show_paket();
+					$data['h_paket'] = $this->AdminModel->h_paket();
+					$data['outlet'] = $this->AdminModel->show_outlet();
+					$data['jenis'] = $this->AdminModel->get_jenis_paket();
+					$data['satuan'] = $this->AdminModel->get_jenis_satuan();
+
+					$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_paket', $data, true);
+					$hitung_paket = $data['h_paket'] = $this->AdminModel->h_paket();
+
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'harga paket berhasil diubah',
+						'html'=>$html,
+						'hitung_paket'=>$hitung_paket
+					);
+				}else{
+					$callback = array(
+						'status'=>'gagal',
+						'pesan'=>validation_errors()
+					);
+				}
+				echo json_encode($callback);
 			}
-			public function aksi_edit_outlet(){
-				$this->AdminModel->edit_db_outlet();
-				$this->session->set_flashdata('sukses', 'diubah.');
-				redirect('AdminControl/m_outlet');
-			}	
+		}
+
+	// pengolahan data outlet {sudah pakai ajax}
+		public function read_outlet(){
+			$data = $this->AdminModel->show_outlet();
+			echo json_encode($data);
+		}
+		public function crud_outlet($mode, $id){
+			if($mode == 'simpan'){
+				if($this->input->is_ajax_request()){
+					if($this->AdminModel->validation_user_outlet()){
+						$this->AdminModel->crud_outlet('simpan', null); // panggil fungsi crud_outlet() di AdminModel
+
+						// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+						$data['tb_outlet'] = $this->AdminModel->show_outlet();
+						$data['h_outlet'] = $this->AdminModel->h_outlet();
+
+						$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_outlet', $data, true);
+						$hitung_outlet = $data['h_outlet'] = $this->AdminModel->h_outlet();
+
+						$callback = array(
+							'status'=>'sukses',
+							'pesan'=>'Data berhasil disimpan',
+							'html'=>$html,
+							'hitung_outlet'=>$hitung_outlet
+						);
+					}else{
+						$callback = array(
+							'status'=>'gagal',
+							'pesan'=>validation_errors()
+						);
+					}
+				}
+				echo json_encode($callback);
+
+			}elseif($mode == 'ubah'){
+				if($this->input->is_ajax_request()){
+					$this->AdminModel->crud_outlet('ubah', $id); // panggil fungsi crud_outlet() di AdminModel
+
+					// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+					$data['tb_outlet'] = $this->AdminModel->show_outlet();
+					$data['h_outlet'] = $this->AdminModel->h_outlet();
+
+					$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_outlet', $data, true);
+					$hitung_outlet = $data['h_outlet'] = $this->AdminModel->h_outlet();
+
+					$callback = array(
+						'status'=>'sukses',
+						'pesan'=>'Data berhasil diubah',
+						'html'=>$html,
+						'hitung_outlet'=>$hitung_outlet
+					);
+				}else{
+					$callback = array(
+						'status'=>'gagal',
+						'pesan'=>validation_errors()
+					);
+				}
+				echo json_encode($callback);
+			}
+		}
 
 	// pengolahan data transaksi
+
+		// uji coba ajax
+			public function read_transaksi(){
+				$data = $this->AdminModel->show_transaksi();
+				echo json_encode($data);
+			}
+			public function crud_transaksi($mode, $id){
+				if($mode == 'simpan'){
+					if($this->input->is_ajax_request()){
+						if($this->AdminModel->validation_transaksi()){
+							$this->AdminModel->crud_transaksi('simpan', null); // panggil fungsi crud_transaksi() di AdminModel
+	
+							// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+							$data['paket'] = $this->AdminModel->show_paket();
+							$data['member'] = $this->AdminModel->show_member();
+							$data['outlet'] = $this->AdminModel->show_outlet();
+							$data['tb_user'] = $this->AdminModel->show_user();
+							$data['tb_member'] = $this->AdminModel->show_member();
+							$data['tb_paket'] = $this->AdminModel->show_paket();
+							$data['tb_transaksi'] = $this->AdminModel->show_transaksi();
+							$data['status_order'] = $this->AdminModel->get_status_order();
+							$data['status_dibayar'] = $this->AdminModel->get_status_dibayar();
+							$data['h_transaksi_baru'] = $this->AdminModel->h_transaksi_baru();
+							$data['h_transaksi_semua'] = $this->AdminModel->h_total_transaksi();
+
+							$mentah = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+							$data['kode_nuklir'] = substr(str_shuffle($mentah), 0, 15);
+							$data['h_paket'] = $this->AdminModel->h_paket();
+							$data['h_member'] = $this->AdminModel->h_member();
+	
+							$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_transaksi', $data, true);
+							$hitung_transaksi_baru = $data['h_transaksi_baru'] = $this->AdminModel->h_transaksi_baru();
+							$hitung_transaksi_semua = $data['h_transaksi_semua'] = $this->AdminModel->h_total_transaksi();
+							$kode_nuklir = $data['kode_nuklir'] = substr(str_shuffle($mentah), 0, 15);
+	
+							$callback = array(
+								'status'=>'sukses',
+								'pesan'=>'Data transaksi berhasil ditambahkan',
+								'html'=>$html,
+								'hitung_transaksi_baru'=>$hitung_transaksi_baru,
+								'hitung_transaksi_semua'=>$hitung_transaksi_semua,
+								'kode_invoice'=>'BKL'+$kode_nuklir+'TR'
+							);
+						}else{
+							$callback = array(
+								'status'=>'gagal',
+								'pesan'=>validation_errors()
+							);
+						}
+					}
+					echo json_encode($callback);
+
+				}elseif($mode == 'ubah'){
+
+				}
+			}
+
+
 		// detail
 			public function detail_data_transaksi($id){
 				$datap['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
