@@ -474,6 +474,10 @@
 
 						}else{
 							$('#pesan-error').html(response.pesan).show();
+							$('#text-tombol-tambah').html('x Terjadi kesalahan x');
+							setTimeout(() => {
+								$('#text-tombol-tambah').html('Tambah');
+							}, 2000);
 						}
 					},
 					error: function (xhr, ajaxOptions, thrownError) {

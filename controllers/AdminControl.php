@@ -210,6 +210,7 @@ class AdminControl extends CI_Controller {
 			$dataS['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
 
 			// $data['data_edit_outlet'] = $this->AdminModel->get_data_edit_db_outlet($id);
+			$data['outlet'] = $this->AdminModel->show_outlet();
 			$data['tb_outlet'] = $this->AdminModel->show_outlet();
 			$data['h_outlet'] = $this->AdminModel->h_outlet();
 
@@ -228,7 +229,8 @@ class AdminControl extends CI_Controller {
 		}
 		public function m_transaksi(){
 			$dataS['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
-
+			
+			$data['tb_useraktif'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
 			$data['paket'] = $this->AdminModel->show_paket();
 			$data['member'] = $this->AdminModel->show_member();
 			$data['outlet'] = $this->AdminModel->show_outlet();
@@ -272,7 +274,7 @@ class AdminControl extends CI_Controller {
 		public function laporan(){
 			$dataS['tb_user'] = $this->db->get_where('tb_user', ['username' => $this->session->userdata('username')])->row_array();
 
-			$data['outlet'] = $this->AdminModel->get_db_outlet();
+			$data['outlet'] = $this->AdminModel->show_outlet();
 
 			$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/header', $data);
 			$this->load->view('websiteLaundryPBO/admin/templating_engine_admin/sidebar', $dataS);
@@ -679,7 +681,7 @@ class AdminControl extends CI_Controller {
 		public function crud_outlet($mode, $id){
 			if($mode == 'simpan'){
 				if($this->input->is_ajax_request()){
-					if($this->AdminModel->validation_user_outlet()){
+					if($this->AdminModel->validation_outlet()){
 						$this->AdminModel->crud_outlet('simpan', null); // panggil fungsi crud_outlet() di AdminModel
 
 						// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
@@ -734,6 +736,11 @@ class AdminControl extends CI_Controller {
 	// pengolahan data transaksi
 
 		// uji coba ajax
+			public function get_data_paket(){
+				$id = $this->input->post('id', true);
+				$data = $this->AdminModel->get_data_paket($id)->result();
+				echo json_encode($data);
+			}
 			public function read_transaksi(){
 				$data = $this->AdminModel->show_transaksi();
 				echo json_encode($data);
@@ -765,7 +772,7 @@ class AdminControl extends CI_Controller {
 							$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_transaksi', $data, true);
 							$hitung_transaksi_baru = $data['h_transaksi_baru'] = $this->AdminModel->h_transaksi_baru();
 							$hitung_transaksi_semua = $data['h_transaksi_semua'] = $this->AdminModel->h_total_transaksi();
-							$kode_nuklir = $data['kode_nuklir'] = substr(str_shuffle($mentah), 0, 15);
+							$kode_nuklir = 'BKL'.substr(str_shuffle($mentah), 0, 15).'TR';
 	
 							$callback = array(
 								'status'=>'sukses',
@@ -773,8 +780,17 @@ class AdminControl extends CI_Controller {
 								'html'=>$html,
 								'hitung_transaksi_baru'=>$hitung_transaksi_baru,
 								'hitung_transaksi_semua'=>$hitung_transaksi_semua,
-								'kode_invoice'=>'BKL'+$kode_nuklir+'TR'
+								'kode_invoice'=>$kode_nuklir // error disini
 							);
+
+							// trigger detail transaksi
+							// BEGIN
+							// 	INSERT INTO tb_detail_transaksi set 
+							// 	id_transaksi = new.id,
+							// 	id_paket=new.id_paket,
+							// 	jumlah=new.jumlah,
+							// 	keterangan = "Terima Kasih telah menggunakan jasa laundry kami :)"; 
+							// END
 						}else{
 							$callback = array(
 								'status'=>'gagal',
@@ -785,10 +801,49 @@ class AdminControl extends CI_Controller {
 					echo json_encode($callback);
 
 				}elseif($mode == 'ubah'){
+					if($this->input->is_ajax_request()){
+						$this->AdminModel->crud_transaksi('ubah', $id); // panggil fungsi crud_transaksi() di AdminModel
+	
+						// Load ulang view.php agar data yang baru bisa muncul di tabel pada view.php
+						$data['paket'] = $this->AdminModel->show_paket();
+						$data['member'] = $this->AdminModel->show_member();
+						$data['outlet'] = $this->AdminModel->show_outlet();
+						$data['tb_user'] = $this->AdminModel->show_user();
+						$data['tb_member'] = $this->AdminModel->show_member();
+						$data['tb_paket'] = $this->AdminModel->show_paket();
+						$data['tb_transaksi'] = $this->AdminModel->show_transaksi();
+						$data['status_order'] = $this->AdminModel->get_status_order();
+						$data['status_dibayar'] = $this->AdminModel->get_status_dibayar();
+						$data['h_transaksi_baru'] = $this->AdminModel->h_transaksi_baru();
+						$data['h_transaksi_semua'] = $this->AdminModel->h_total_transaksi();
 
+						$mentah = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+						$data['kode_nuklir'] = substr(str_shuffle($mentah), 0, 15);
+						$data['h_paket'] = $this->AdminModel->h_paket();
+						$data['h_member'] = $this->AdminModel->h_member();
+	
+						$html = $this->load->view('websitelaundryPBO/admin/tabel/tabel_transaksi', $data, true);
+						$hitung_transaksi_baru = $data['h_transaksi_baru'] = $this->AdminModel->h_transaksi_baru();
+						$hitung_transaksi_semua = $data['h_transaksi_semua'] = $this->AdminModel->h_total_transaksi();
+						$kode_nuklir = 'BKL'.substr(str_shuffle($mentah), 0, 15).'TR';
+	
+						$callback = array(
+							'status'=>'sukses',
+							'pesan'=>'Data transaksi berhasil diubah',
+							'html'=>$html,
+							'hitung_transaksi_baru'=>$hitung_transaksi_baru,
+							'hitung_transaksi_semua'=>$hitung_transaksi_semua,
+							'kode_invoice'=>$kode_nuklir
+						);
+					}else{
+						$callback = array(
+							'status'=>'gagal',
+							'pesan'=>validation_errors()
+						);
+					}
+					echo json_encode($callback);
 				}
 			}
-
 
 		// detail
 			public function detail_data_transaksi($id){
@@ -816,103 +871,6 @@ class AdminControl extends CI_Controller {
 				$this->session->set_flashdata('sukses', 'diperbarui.');
 				redirect('AdminControl/m_transaksi');
 			}
-
-		public function get_data_paket(){
-			$id = $this->input->post('id', true);
-			$data = $this->AdminModel->get_data_paket($id)->result();
-			echo json_encode($data);
-		}
-
-		public function simpan_data_transaksi(){
-			$this->form_validation->set_rules('kodeinvoice', 'Kode Transaksi' , 'required|trim', [
-				'required' => 'Kode Transaksi harus diisi !'
-			]);
-			$this->form_validation->set_rules('petugas', 'Petugas' , 'required|trim', [
-				'required' => 'Nama Petugas harus diisi !'
-			]);
-			$this->form_validation->set_rules('cabang', 'Cabang' , 'required|trim', [
-				'required' => 'Cabang Toko harus dipilih !'
-			]);
-			$this->form_validation->set_rules('cabang', 'Cabang' , 'required|trim', [
-				'required' => 'Cabang Toko harus dipilih !'
-			]);
-			$this->form_validation->set_rules('namamember', 'Nama Pelanggan' , 'required|trim', [
-				'required' => 'Nama Pelanggan harus dipilih !'
-			]);
-			$this->form_validation->set_rules('paket', 'Paket Laundry' , 'required|trim', [
-				'required' => 'Paket Laundry harus dipilih !'
-			]);
-			$this->form_validation->set_rules('jumlah', 'Jumlah Barang' , 'required|trim|numeric', [
-				'required' => 'Jumlah Barang harus diisi !',
-				'numeric' => 'Input Jumlah Barang harus angka !'
-			]);
-			$this->form_validation->set_rules('harga_jual', 'Harga Jual' , 'required|trim|numeric', [
-				'required' => 'Harga Jual harus diisi !',
-				'numeric' => 'Input Harga Jual harus angka !'
-			]);
-			$this->form_validation->set_rules('diskon_paket', 'Diskon' , 'required|trim|numeric', [
-				'required' => 'Diskon harus diisi !',
-				'numeric' => 'Input Diskon harus angka !'
-			]);
-			$this->form_validation->set_rules('harga_diskon', 'Harga Diskon' , 'required|trim|numeric', [
-				'required' => 'Harga Diskon harus diisi !',
-				'numeric' => 'Input Harga Diskon harus angka !'
-			]);
-			$this->form_validation->set_rules('total', 'Total Harga' , 'required|trim|numeric', [
-				'required' => 'Total Harga harus diisi !',
-				'numeric' => 'Input Total Harga harus angka !'
-			]);
-			$this->form_validation->set_rules('tunai', 'Tunai' , 'required|trim|numeric', [
-				'required' => 'Jumlah Uang harus diisi !',
-				'numeric' => 'Input Jumlah Uang harus angka !'
-			]);
-			$this->form_validation->set_rules('kembali', 'Kembalian' , 'required|trim|numeric', [
-				'required' => 'Kembalian harus diisi !',
-				'numeric' => 'Input Kembalian harus angka !'
-			]);
-			$this->form_validation->set_rules('t_pembayaran', 'Tipe Pembayaran' , 'required|trim', [
-				'required' => 'Tipe Pembayaran harus dipilih !'
-			]);
-			$this->form_validation->set_rules('s_pembayaran', 'Status Pembayaran' , 'required|trim', [
-				'required' => 'Status Pembayaran harus dipilih !'
-			]);
-			$this->form_validation->set_rules('s_order', 'Status Order' , 'required|trim', [
-				'required' => 'Status Order harus dipilih !'
-			]);
-			// mungkin yang ini ntar dipake
-				// $this->form_validation->set_rules('reg[dob]','Date of birth',array('regex_match[/^((0[1-9]|[12][0-9]|3[01])[- \/.](0[1-9]|1[012])[- \/.](19|20)\d\d)$/]'));
-				// $this->form_validation->set_rules('email', 'Email' , 'required|trim|valid_email', [
-				// 	'required' => 'Email harus diisi !',
-				// 	'valid_email' => 'Email tidak benar !'
-				// ]);
-				// $this->form_validation->set_rules('alamat', 'Alamat' , 'required|trim', [
-				// 	'required' => 'Alamat harus diisi !'
-				// ]);
-				// $this->form_validation->set_rules('telepon', 'No.Telepon' , 'required|trim|numeric', [
-				// 	'required' => 'No.Telepon harus diisi !',
-				// 	'numeric' => 'Isi no telepon harus angka !'
-				// ]);
-				// $this->form_validation->set_rules('gender', 'Jenis Kelamin' , 'required|trim', [
-				// 	'required' => 'Jenis kelamin harus dipilih !'
-				// ]);
-	
-			if($this->form_validation->run() == false){
-				$this->t_transaksi();
-			}else{
-				$this->AdminModel->simpan_db_transaksi();
-				// $this->AdminModel->simpan_db_detail_transaksi();
-				$this->session->set_flashdata('sukses', 'ditambahkan.');
-				redirect('AdminControl/m_transaksi');
-			}
-			// trigger detail transaksi
-			// BEGIN
-			// 	INSERT INTO tb_detail_transaksi set 
-			// 	id_transaksi = new.id,
-			// 	id_paket=new.id_paket,
-			// 	jumlah=new.jumlah,
-			// 	keterangan = "Terima Kasih telah menggunakan jasa laundry kami :)"; 
-			// END
-		}
 
 	// pengolahan data laporan
 		public function get_data_cabang_paket(){

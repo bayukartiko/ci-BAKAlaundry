@@ -74,6 +74,7 @@
 			<div id="view">
 				<?php
 					$data = [
+						'tb_useraktif' => $tb_useraktif,
 						'paket' => $paket,
 						'member' => $member,
 						'outlet' => $outlet,
@@ -127,9 +128,8 @@
 									<label for="petugas">Nama Petugas</label>
 								</div>
 								<div class="col-md-10 mb-3">
-									<input type="hidden" name="id_petugas" id="id_petugas" value="<?= $tb_user['id']; ?>">
-									<input type="text" class="form-control" name="petugas" id="petugas" value="<?= $tb_user['nama']; ?>" readonly>
-									<?= form_error('petugas', '<small class="text-danger">', '</small>'); ?>
+									<input type="hidden" name="id_petugas" id="id_petugas" value='<?= $tb_useraktif["id"]; ?>'>
+									<input type="text" class="form-control" name="petugas" id="petugas" value='<?= $tb_useraktif["nama"]; ?>' readonly>
 								</div>
 							</div>
 							<div class="form-row">
@@ -406,7 +406,7 @@
 						<div id="pesan-error" class="alert alert-danger"></div>
 						
 						<form enctype="multipart/form-data" id="modal-detail-transaksi">
-							<input type="hidden" name="id">
+							<input type="hidden" name="id" id="id">
 
 							<table class="table table-bordered table-hover">
 								<tr>
@@ -461,6 +461,43 @@
 								</tr>
 							</table>
 
+							<table class="table table-bordered table-hover table-sm">
+								<thead>
+									<tr>
+										<th scope="col">No</th>
+										<th scope="col">Tgl.Order</th>
+										<th scope="col">Paket Laundry</th>
+										<th scope="col">Harga</th>
+										<th scope="col">Jumlah Barang</th>
+										<th scope="col">Subtotal</th>
+										<th scope="col">Tunai</th>
+										<th scope="col" id="titlekembali-detail"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th scope="row">1</th>
+										<td id="tgl_order"></td>
+										<td id="nama_paket"></td>
+										<td> 
+											<span id="harga_paket"></span> / <span id="satuan_paket"></span>
+										</td>
+										<td> 
+											<span id="jumlah_barang"></span> <span id="satuan_paket-jumlah"></span>
+										</td>
+										<td> 
+											<input type="hidden" name="total_harga" id="total_harga"> <span id="total_harga-view"></span>
+										</td>
+										<td id="tunai-detail"></td>
+										<td id="kembali-detail"></td>
+									</tr>
+									<tr>
+										<th colspan="7" class="text-center bg-primary text-white">TOTAL HARGA</th>
+										<th id="total_harga-2"></th>
+									</tr>
+								</tbody>
+							</table>
+
 						</form>
 						
 					</div>
@@ -482,303 +519,359 @@
 </div>
 
 <script>
-	// crud transaksi
-		var id = 0;
-		$("#loading-simpan, #loading-ubah, #loading-hapus, #pesan-error, #pesan-sukses").hide();
+	$(document).ready(function(){
+		// crud transaksi
+			var id = 0;
+			$("#loading-simpan, #loading-ubah, #loading-hapus, #pesan-error, #pesan-sukses").hide();
 
-		$('#form-modal').on('hidden.bs.modal', function (e){ // Ketika Modal Dialog di Close / tertutup
-			$('#form-modal input, #form-modal select, #form-modal textarea').val(''); // Clear inputan menjadi kosong
-			$('#pesan-error').hide();
-		});
-
-		// tambah
-			$('#btn-tambah').click(function(){ // Ketika tombol tambah diklik
-
+			$('#form-modal').on('hidden.bs.modal', function (e){ // Ketika Modal Dialog di Close / tertutup
 				$('#form-modal input, #form-modal select, #form-modal textarea').val(''); // Clear inputan menjadi kosong
 				$('#pesan-error').hide();
-
-				$('#loading-simpan').hide();
-				$('#text-tombol-tambah').html('Tambah');
-
 			});
 
-			$('#btn-simpan').click(function(){ // Ketika tombol simpan didalam modal di klik
-				$('#loading-simpan').show(); // Munculkan loading simpan
-				$('#text-tombol-tambah').html('Sedang menambahkan...'); // ganti text tambah jadi sedang menyimpan
+			// tambah
+				$('#btn-tambah').click(function(){ // Ketika tombol tambah diklik
 
-				$.ajax({
-					url: '<?= base_url(); ?>AdminControl/crud_transaksi/simpan/'+null+'', // URL tujuan
-					type: 'POST',
-					// data: $("#form-modal form").serialize(),
-					data: new FormData(document.getElementById('modal-tambah-transaksi')),
-					processData:false,
-					contentType:false,
-					cache:false,
-					async:false,
-					dataType: 'JSON',
-					beforeSend: function() {
-						$('#loading-simpan').show(); // Munculkan loading simpan
-						$('#text-tombol-tambah').html('Sedang menambahkan...'); // ganti text tambah jadi sedang menyimpan
-					},
-					success: function(response){
-						$('#loading-simpan').hide()
-						if(response.status == 'sukses'){ // Jika Statusnya = sukses
-							
-							$('#form-modal-tambah-transaksi').modal('hide');
-							
-							// Ganti isi dari div view dengan view yang diambil dari proses_simpan.php
-							$('#view').html(response.html);
-							$('#total_transaksi').html(response.hitung_transaksi);
-							$('#pesan-sukses').html(response.pesan).fadeIn().delay(10000).fadeOut();
-							$('#kodeinvoice').val(response.kode_invoice);
+					$('#form-modal input, #form-modal select, #form-modal textarea').val(''); // Clear inputan menjadi kosong
+					$('#pesan-error').hide();
 
-							const Toast = Swal.mixin({
-								toast: true,
-								position: 'top-end',
-								showConfirmButton: false,
-								timer: 10000,
-								timerProgressBar: true,
-								didOpen: (toast) => {
-									toast.addEventListener('mouseenter', Swal.stopTimer)
-									toast.addEventListener('mouseleave', Swal.resumeTimer)
-								}
-							});
-							Toast.fire({
-								icon: 'success',
-								title: 'Data transaksi berhasil ditambahkan'
+					$('#loading-simpan').hide();
+					$('#text-tombol-tambah').html('Tambah');
+
+					// pilihan satuan paket di tambah transaksi
+						$(document).ready(function(){
+							$("#cabang").on('change', function(){
+								var id_cabang= $(this).val();
+								$("#jumlah").val("");
+								$("#harga_jual").val("");
+								$("#diskon_paket").val("");
+								$("#harga_diskon").val("");
+								$("#total").val("");
+								$("#tunai").val("");
+								$("#kembali").val("");
+								$("#s_pembayaran").html('<option value="Belum Dibayar" selected disabled>Belum Dibayar</option>');
+
+								$.ajax({
+									url: "<?= site_url('AdminControl/get_data_cabang_paket'); ?>",
+									method: "POST",
+									data: {id_cabang:id_cabang},
+									async: true,
+									dataType: 'JSON',
+									success: function(data){
+										var html = "<option value='' selected disabled>> Pilih Paket Laundry <</option>";
+										var i;
+										for(i=0; i<data.length; i++){
+											html += '<option value='+data[i].id+'>'+data[i].nama_paket+'</option>';
+										}
+										$("#paket").html(html);
+									}
+								});
+								return false;
 							});
 
-						}else{
-							$('#pesan-error').html(response.pesan).show();
-							$('#text-tombol-tambah').html('x Terjadi kesalahan x');
-							setTimeout(() => {
-								$('#text-tombol-tambah').html('Tambah');
-							}, 2000);
-						}
-					},
-					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.responseText);
-					}
-				});
-			});
+							$("#paket").on('change', function(){
+								var id = $(this).val();
+								$("#jumlah").val("");
+								// $("#harga_jual").val("");
+								// $("#diskon_paket").val("");
+								// $("#harga_diskon").val("");
+								$("#total").val("");
+								$("#tunai").val("");
+								$("#kembali").val("");
+								$("#s_pembayaran").html('<option value="Belum Dibayar" selected disabled>Belum Dibayar</option>');
 
-		// pembayaran / detail
-			$('#view').on('click', '.btn-form-detail', function(){
-				id = $(this).data('id'); // Set variabel id dengan id yang kita set pada atribut data-id pada tag button edit
-				
-				// $('#btn-simpan').hide();
-				$('#btn-ubah').show();
-				
-				// Set judul modal dialog menjadi Form Ubah Data
-				// $('#modal-title').html('<i class="fas fa-user-edit"></i> Edit kasir');
-				
-				var tr = $(this).closest('tr');
-				var id = tr.find('.id-value_detail').val();
-				var tgl = tr.find('.tgl-value_detail').val();
-				var kode_invoice = tr.find('.kode_invoice-value_detail').val();
-				var nama_user = tr.find('.nama_user-value_detail').val();
-				var nama_outlet = tr.find('.nama_outlet-value_detail').val();
-				var id_member = tr.find('.id_member-value_detail').val();
-				var nama_member = tr.find('.nama_member-value_detail').val();
-				var alamat_member = tr.find('.alamat_member-value_detail').val();
-				var email_member = tr.find('.email_member-value_detail').val();
-				var telepon_member = tr.find('.telepon_member-value_detail').val();
-				var gender_member = tr.find('.gender_member-value_detail').val();
-				var id_paket = tr.find('.id_paket-value_detail').val();
-				var nama_paket = tr.find('.nama_paket-value_detail').val();
-				var harga_paket = tr.find('.harga_paket-value_detail').val();
-				var satuan_paket = tr.find('.satuan_paket-value_detail').val();
-				var jumlah = tr.find('.jumlah-value_detail').val();
-				var harga_jual = tr.find('.harga_jual-value_detail').val();
-				var diskon = tr.find('.diskon-value_detail').val();
-				var harga_diskon = tr.find('.harga_diskon-value_detail').val();
-				var biaya_tambahan = tr.find('.biaya_tambahan-value_detail').val();
-				var pajak = tr.find('.pajak-value_detail').val();
-				var total = tr.find('.total-value_detail').val();
-				var tunai = tr.find('.tunai-value_detail').val();
-				var kembali = tr.find('.kembali-value_detail').val();
-				var tipe_pembayaran = tr.find('.tipe_pembayaran-value_detail').val();
-				var status = tr.find('.status_order-value_detail').val();
-				var tgl_bayar = tr.find('.tgl_bayar-value_detail').val();
-				var tgl_ambil = tr.find('.tgl_ambil-value_detail').val();
-				var status_bayar = tr.find('.status_bayar-value_detail').val();
-				
-				$('#id').html(id);
-				// $('#namalengkap').html(tgl);
-				$('#kode_invoice-detail').html(kode_invoice);
-				$('#nama_user-detail').html(nama_user);
-				$('#cabang_id-detail').html(nama_outlet);
-				// $('#namalengkap').html(id_member);
-				$('#nama_pelanggan-detail').html(nama_member);
-				$('#alamat_pelanggan-detail').html(alamat_member);
-				$('#email_pelanggan-detail').html(email_member);
-				$('#tlp_pelanggan-detail').html(telepon_member);
-				// $('#namalengkap').html(gender_member);
-				// $('#namalengkap').html(id_paket);
-				// $('#namalengkap').html(nama_paket);
-				// $('#namalengkap').html(harga_paket);
-				// $('#namalengkap').html(satuan_paket);
-				// $('#namalengkap').html(jumlah);
-				// $('#namalengkap').html(harga_jual);
-				// $('#namalengkap').html(diskon);
-				// $('#namalengkap').html(harga_diskon);
-				// $('#namalengkap').html(biaya_tambahan);
-				// $('#namalengkap').html(pajak);
-				// $('#namalengkap').html(total);
-				// $('#namalengkap').html(tunai);
-				// $('#namalengkap').html(kembali);
-				$('#tipe_pembayaran-detail').html(tipe_pembayaran);
-				$('#edit_s_order').html(status);
-				// $('#namalengkap').html(tgl_bayar);
-				$('#tgl_ambil-detail').html(tgl_ambil);
-				$('#edit_s_pembayaran').html(status_bayar);
+								$.ajax({
+									url: "<?= site_url('AdminControl/get_data_paket'); ?>",
+									method: "POST",
+									data: {id:id},
+									async: true,
+									dataType: 'JSON',
+									success: function(data){
+										var satuan = "";
+										var diskon = "";
+										var harga = "";
+										var i;
+										for(i=0; i<data.length; i++){
+											satuan += data[i].satuan;
+											diskon += data[i].diskon;
+											harga += data[i].harga;
+									}
+									$("#hasilpilihan").html(satuan);
+									$("#diskon_paket").val(diskon);
 
-				// besok bikin tabel ke dua di modal detail transaksi
+									// hitung diskon
+										if(diskon == 0){
+											$("#harga_jual").val(harga);
+											$("#harga_diskon").val(harga);
+										}else{
+											var nilai_harga = harga;
+											var nilai_diskon = diskon;
 
-				$('#loading-ubah').hide();
-				$('#text-tombol-ubah').html('Ubah status order');
-			});
+											var hasil_diskon = harga*(nilai_diskon/100);
+											var hasil_akhir = nilai_harga-hasil_diskon;
 
+											// $("#harga_jual").val(harga);
+											$("#harga_jual").val(harga);
+											$("#harga_diskon").val(hasil_akhir);
+										}
 
-	// detail transaksi
-		$("#harga_tunai_detail").on('input', function(){
-			var duit = $(this).val();
-			var total = $("#total_harga").val();
-			// var sama_total = "-"+total;
+									// hitung total
+										$("#jumlah").on('input', function(){
+											var jumlah_barang = $(this).val();
+											var jumlah_diskon = $('#harga_diskon').val();
+											var biaya_tambahan = 500;
+											var pajak = 500;
 
-			var hitung_kembalian = duit-total;
+											var hitung_total = (jumlah_diskon*jumlah_barang)+biaya_tambahan+pajak;
+											
+											$('#total').val(hitung_total);
+										});
 
-			if(hitung_kembalian >= 0){
-				$("#titlekembali").html("Kembali");
-				$("#edit_s_pembayaran").html('<option value="Dibayar" selected>+ Dibayar +</option>');
-			}else if(hitung_kembalian < 0){
-				$("#titlekembali").html("Kurang");
-				$("#edit_s_pembayaran").html('<option value="Kurang" selected>+ Kurang +</option>');
-			}
+									// hitung kembali
+										$("#tunai").on('input', function(){
+											var duit = $(this).val();
+											var total = $("#total").val();
+											// var sama_total = "-"+total;
 
-			var jumlah_kembalian = hitung_kembalian;
-			jumlah_kembalian = jumlah_kembalian.toString().replace('-', '');
-			$("#harga_kembali_detail").val(jumlah_kembalian);
-		});
+											var hitung_kembalian = duit-total;
 
-	// pilihan satuan paket di transaksi
-		$(document).ready(function(){
-			$("#cabang").on('change', function(){
-				var id_cabang= $(this).val();
-				$("#jumlah").val("");
-				$("#harga_jual").val("");
-				$("#diskon_paket").val("");
-				$("#harga_diskon").val("");
-				$("#total").val("");
-				$("#tunai").val("");
-				$("#kembali").val("");
-				$("#s_pembayaran").html('<option value="Belum Dibayar" selected disabled>Belum Dibayar</option>');
+											if(hitung_kembalian >= 0){
+												$("#titlekembali").html("Kembali");
+												$("#s_pembayaran").html('<option value="Dibayar" selected>Dibayar</option>');
+											}else if(hitung_kembalian < 0){
+												$("#titlekembali").html("Kurang");
+												$("#s_pembayaran").html('<option value="Kurang" selected>Kurang</option>');
+											}
+											// else if(hitung_kembalian = sama_total){
+											// 	$("#titlekembali").html("Belum Dibayar");
+											// 	$("#s_pembayaran").html('<option value="Belum Dibayar" selected>Belum Dibayar</option>');
+											// }
 
-				$.ajax({
-					url: "<?= site_url('AdminControl/get_data_cabang_paket'); ?>",
-					method: "POST",
-					data: {id_cabang:id_cabang},
-					async: true,
-					dataType: 'JSON',
-					success: function(data){
-						var html = "<option value='' selected disabled>> Pilih Paket Laundry <</option>";
-						var i;
-						for(i=0; i<data.length; i++){
-							html += '<option value='+data[i].id+'>'+data[i].nama_paket+'</option>';
-						}
-						$("#paket").html(html);
-					}
-				});
-				return false;
-			});
+											var jumlah_kembalian = hitung_kembalian;
+											jumlah_kembalian = jumlah_kembalian.toString().replace('-', '');
+											$("#kembali").val(jumlah_kembalian);
 
-			$("#paket").on('change', function(){
-				var id = $(this).val();
-				$("#jumlah").val("");
-				// $("#harga_jual").val("");
-				// $("#diskon_paket").val("");
-				// $("#harga_diskon").val("");
-				$("#total").val("");
-				$("#tunai").val("");
-				$("#kembali").val("");
-				$("#s_pembayaran").html('<option value="Belum Dibayar" selected disabled>Belum Dibayar</option>');
-
-				$.ajax({
-					url: "<?= site_url('AdminControl/get_data_paket'); ?>",
-					method: "POST",
-					data: {id:id},
-					async: true,
-					dataType: 'JSON',
-					success: function(data){
-						var satuan = "";
-						var diskon = "";
-						var harga = "";
-						var i;
-						for(i=0; i<data.length; i++){
-							satuan += data[i].satuan;
-							diskon += data[i].diskon;
-							harga += data[i].harga;
-					}
-					$("#hasilpilihan").html(satuan);
-					$("#diskon_paket").val(diskon);
-
-					// hitung diskon
-						if(diskon == 0){
-							$("#harga_jual").val(harga);
-							$("#harga_diskon").val(harga);
-						}else{
-							var nilai_harga = harga;
-							var nilai_diskon = diskon;
-
-							var hasil_diskon = harga*(nilai_diskon/100);
-							var hasil_akhir = nilai_harga-hasil_diskon;
-
-							// $("#harga_jual").val(harga);
-							$("#harga_jual").val(harga);
-							$("#harga_diskon").val(hasil_akhir);
-						}
-
-					// hitung total
-						$("#jumlah").on('input', function(){
-							var jumlah_barang = $(this).val();
-							var jumlah_diskon = $('#harga_diskon').val();
-							var biaya_tambahan = 500;
-							var pajak = 500;
-
-							var hitung_total = (jumlah_diskon*jumlah_barang)+biaya_tambahan+pajak;
-							
-							$('#total').val(hitung_total);
+										});
+									}
+								});
+								// });
+								return false;
+							});
 						});
 
-					// hitung kembali
-						$("#tunai").on('input', function(){
-							var duit = $(this).val();
-							var total = $("#total").val();
-							// var sama_total = "-"+total;
+				});
 
-							var hitung_kembalian = duit-total;
+				$('#btn-simpan').click(function(){ // Ketika tombol simpan didalam modal di klik
+					$('#loading-simpan').show(); // Munculkan loading simpan
+					$('#text-tombol-tambah').html('Sedang menambahkan...'); // ganti text tambah jadi sedang menyimpan
 
-							if(hitung_kembalian >= 0){
-								$("#titlekembali").html("Kembali");
-								$("#s_pembayaran").html('<option value="Dibayar" selected>Dibayar</option>');
-							}else if(hitung_kembalian < 0){
-								$("#titlekembali").html("Kurang");
-								$("#s_pembayaran").html('<option value="Kurang" selected>Kurang</option>');
+					$.ajax({
+						url: '<?= base_url(); ?>AdminControl/crud_transaksi/simpan/'+null+'', // URL tujuan
+						type: 'POST',
+						// data: $("#form-modal form").serialize(),
+						data: new FormData(document.getElementById('modal-tambah-transaksi')),
+						processData:false,
+						contentType:false,
+						cache:false,
+						async:false,
+						dataType: 'JSON',
+						beforeSend: function() {
+							$('#loading-simpan').show(); // Munculkan loading simpan
+							$('#text-tombol-tambah').html('Sedang menambahkan...'); // ganti text tambah jadi sedang menyimpan
+						},
+						success: function(response){
+							$('#loading-simpan').hide()
+							if(response.status == 'sukses'){ // Jika Statusnya = sukses
+								
+								$('#form-modal-tambah-transaksi').modal('hide');
+								
+								// Ganti isi dari div view dengan view yang diambil dari proses_simpan.php
+								$('#view').html(response.html);
+								$('#total_transaksi').html(response.hitung_transaksi_semua);
+								$('#total_transaksi-baru').html(response.hitung_transaksi_baru);
+								$('#pesan-sukses').html(response.pesan).fadeIn().delay(10000).fadeOut();
+								$('#kodeinvoice').val(response.kode_invoice);
+
+								const Toast = Swal.mixin({
+									toast: true,
+									position: 'top-end',
+									showConfirmButton: false,
+									timer: 10000,
+									timerProgressBar: true,
+									didOpen: (toast) => {
+										toast.addEventListener('mouseenter', Swal.stopTimer)
+										toast.addEventListener('mouseleave', Swal.resumeTimer)
+									}
+								});
+								Toast.fire({
+									icon: 'success',
+									title: 'Data transaksi berhasil ditambahkan'
+								});
+
+							}else{
+								$('#pesan-error').html(response.pesan).show();
+								$('#text-tombol-tambah').html('x Terjadi kesalahan x');
+								setTimeout(() => {
+									$('#text-tombol-tambah').html('Tambah');
+								}, 2000);
 							}
-							// else if(hitung_kembalian = sama_total){
-							// 	$("#titlekembali").html("Belum Dibayar");
-							// 	$("#s_pembayaran").html('<option value="Belum Dibayar" selected>Belum Dibayar</option>');
-							// }
-
-							var jumlah_kembalian = hitung_kembalian;
-							jumlah_kembalian = jumlah_kembalian.toString().replace('-', '');
-							$("#kembali").val(jumlah_kembalian);
-
-						});
-					}
+						},
+						error: function (xhr, ajaxOptions, thrownError) {
+							alert(xhr.responseText);
+							console.log(xhr.responseText);
+						}
+					});
 				});
-				// });
-				return false;
-			});
-		});
+
+			// pembayaran / detail
+				$('#view').on('click', '.btn-form-detail', function(){
+					id = $(this).data('id'); // Set variabel id dengan id yang kita set pada atribut data-id pada tag button edit
+					
+					// $('#btn-simpan').hide();
+					$('#btn-ubah').show();
+					
+					// Set judul modal dialog menjadi Form Ubah Data
+					// $('#modal-title').html('<i class="fas fa-user-edit"></i> Edit kasir');
+					
+					var tr = $(this).closest('tr');
+					var id = tr.find('.id-value_detail').val();
+					// tabel pertama
+						var kode_invoice = tr.find('.kode_invoice-value_detail').val();
+						var nama_user = tr.find('.nama_user-value_detail').val();
+						var nama_outlet = tr.find('.nama_outlet-value_detail').val();
+						var id_member = tr.find('.id_member-value_detail').val();
+						var nama_member = tr.find('.nama_member-value_detail').val();
+						var alamat_member = tr.find('.alamat_member-value_detail').val();
+						var email_member = tr.find('.email_member-value_detail').val();
+						var telepon_member = tr.find('.telepon_member-value_detail').val();
+						var gender_member = tr.find('.gender_member-value_detail').val();
+						var tipe_pembayaran = tr.find('.tipe_pembayaran-value_detail').val();
+						var status = tr.find('.status_order-value_detail').val();
+						var tgl_bayar = tr.find('.tgl_bayar-value_detail').val();
+						var tgl_ambil = tr.find('.tgl_ambil-value_detail').val();
+						var status_bayar = tr.find('.status_bayar-value_detail').val();
+					// tabel kedua
+						var tgl = tr.find('.tgl-value_detail').val();
+						var titlekembali = tr.find('.titlekembali-value_detail').val();
+						var id_paket = tr.find('.id_paket-value_detail').val();
+						var nama_paket = tr.find('.nama_paket-value_detail').val();
+						var harga_paket = tr.find('.harga_paket-value_detail').val();
+						var satuan_paket = tr.find('.satuan_paket-value_detail').val();
+						var jumlah = tr.find('.jumlah-value_detail').val();
+						var harga_jual = tr.find('.harga_jual-value_detail').val();
+						var diskon = tr.find('.diskon-value_detail').val();
+						var harga_diskon = tr.find('.harga_diskon-value_detail').val();
+						var biaya_tambahan = tr.find('.biaya_tambahan-value_detail').val();
+						var pajak = tr.find('.pajak-value_detail').val();
+						var total_hidden = tr.find('.total-value-hidden_detail').val();
+						var total = tr.find('.total-value_detail').val();
+						var tunai = tr.find('.tunai-value_detail').val();
+						var kembali = tr.find('.kembali-value_detail').val();
+					
+					$('#id').val(id);
+					// tabel pertama
+						$('#kode_invoice-detail').html(kode_invoice);
+						$('#nama_user-detail').html(nama_user);
+						$('#cabang_id-detail').html(nama_outlet);
+						$('#nama_pelanggan-detail').html(nama_member);
+						$('#alamat_pelanggan-detail').html(alamat_member);
+						$('#email_pelanggan-detail').html(email_member);
+						$('#tlp_pelanggan-detail').html(telepon_member);
+						$('#tipe_pembayaran-detail').html(tipe_pembayaran);
+						$('#edit_s_order').html(status);
+						$('#tgl_ambil-detail').html(tgl_ambil);
+						$('#edit_s_pembayaran').html(status_bayar);
+					// tabel kedua
+						$('#titlekembali-detail').html(titlekembali);
+						$('#tgl_order').html(tgl);
+						$('#nama_paket').html(nama_paket);
+						$('#harga_paket').html('Rp.'+harga_paket);
+						$('#satuan_paket').html(satuan_paket);
+						$('#jumlah_barang').html(jumlah);
+						$('#satuan_paket-jumlah').html(satuan_paket);
+						$('#total_harga').val(total_hidden);
+						$('#total_harga-view').html('Rp.'+total);
+						$('#total_harga-2').html('Rp.'+total);
+						$('#tunai-detail').html(tunai);
+						$('#kembali-detail').html(kembali);
+
+						// detail transaksi
+							$("#harga_tunai_detail").on('input', function(){
+								var duit = $(this).val();
+								var total = $("#total_harga").val();
+								// var sama_total = "-"+total;
+
+								var hitung_kembalian = duit-total;
+
+								if(hitung_kembalian >= 0){
+									$("#titlekembali-detail").html("Kembali");
+									$("#edit_s_pembayaran").html('<option value="Dibayar" selected>+ Dibayar +</option>');
+								}else if(hitung_kembalian < 0){
+									$("#titlekembali-detail").html("Kurang");
+									$("#edit_s_pembayaran").html('<option value="Kurang" selected>+ Kurang +</option>');
+								}
+
+								var jumlah_kembalian = hitung_kembalian;
+								jumlah_kembalian = jumlah_kembalian.toString().replace('-', '');
+								$("#harga_kembali_detail").val(jumlah_kembalian);
+							});
+
+					$('#loading-ubah').hide();
+					$('#text-tombol-ubah').html('Ubah status order');
+				});
+
+				$('#btn-ubah').click(function(){
+					$('#loading-ubah').show(); // Munculkan loading ubah
+					$('#text-tombol-ubah').html('Sedang mengubah...'); // ganti text ubah jadi sedang mangubah
+
+					$.ajax({
+						url: '<?= base_url(); ?>AdminControl/crud_transaksi/ubah/'+id+'', // URL tujuan
+						type: 'POST',
+						// data: $("#form-modal form").serialize(),
+						data: new FormData(document.getElementById('modal-detail-transaksi')),
+						processData:false,
+						contentType:false,
+						cache:false,
+						async:false,
+						dataType: 'JSON',
+						beforeSend: function() {
+							$('#loading-ubah').show(); // Munculkan loading ubah
+							$('#text-tombol-ubah').html('Sedang mengubah...'); // ganti text ubah jadi sedang mangubah
+						},
+						success: function(response){
+							$('#loading-ubah').hide();
+							if(response.status == 'sukses'){
+
+								$('#form-modal-detail-transaksi').modal('hide');
+
+								// Ganti isi dari div view dengan view yang diambil dari proses_ubah.php
+								$('#view').html(response.html);
+								$('#total_transaksi').html(response.hitung_transaksi_semua);
+								$('#total_transaksi-baru').html(response.hitung_transaksi_baru);
+								$('#pesan-sukses').html(response.pesan).fadeIn().delay(10000).fadeOut();
+								$('#kodeinvoice').val(response.kode_invoice);
+
+								const Toast = Swal.mixin({
+									toast: true,
+									position: 'top-end',
+									showConfirmButton: false,
+									timer: 10000,
+									timerProgressBar: true,
+									didOpen: (toast) => {
+										toast.addEventListener('mouseenter', Swal.stopTimer)
+										toast.addEventListener('mouseleave', Swal.resumeTimer)
+									}
+								})
+								Toast.fire({
+									icon: 'success',
+									title: 'Data transaksi berhasil diubah'
+								})
+
+							}else{
+								$('#pesan-error').html(response.pesan).show()
+							}
+						}
+					});
+				});
+	});
 </script>

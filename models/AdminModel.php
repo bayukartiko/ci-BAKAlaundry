@@ -610,7 +610,7 @@ Class AdminModel extends CI_Model{
 			$data = $this->db->get("tb_outlet");
 			return $data->result();
 		}
-		public function validation_user_outlet(){
+		public function validation_outlet(){
 			$this->form_validation->set_rules('nama', 'Nama' , 'required|trim|is_unique[tb_outlet.nama]', [
 				'required' => 'Nama harus diisi !',
 				'is_unique' => 'Cabang ini sudah tersedia !'
@@ -652,237 +652,160 @@ Class AdminModel extends CI_Model{
 			}
 		}
 		
-	// manajemen transaksi
-
-		// uji coba ajax
-			public function get_status_order(){
-				$query = "SHOW COLUMNS FROM tb_transaksi WHERE FIELD = 'status'";
-				$row = $this->db->query($query)->row()->Type;
-				$regex = "/'(.*?)'/";
-				preg_match_all( $regex , $row, $enum_array );
-				$enum_fields = $enum_array[1];
-				return( $enum_fields );
-			}
-			public function get_status_dibayar(){
-				$query = "SHOW COLUMNS FROM tb_transaksi WHERE FIELD = 'status_bayar'";
-				$row = $this->db->query($query)->row()->Type;
-				$regex = "/'(.*?)'/";
-				preg_match_all( $regex , $row, $enum_array );
-				$enum_fields = $enum_array[1];
-				return( $enum_fields );
-			}
-
-			public function h_transaksi_baru(){
-				$data = $this->db->get_where("tb_transaksi", ['status' => 'baru']);
-				return $data->num_rows();
-			}
-			public function h_total_transaksi(){
-				$data = $this->db->get("tb_transaksi");
-				return $data->num_rows();
-			}
-
-			public function show_transaksi(){
-				$this->db->order_by('id', 'desc');
-				$data = $this->db->get("tb_transaksi");
-				return $data->result();
-			}
-			public function validation_transaksi(){
-				$this->form_validation->set_rules('kodeinvoice', 'Kode Transaksi' , 'required|trim', [
-					'required' => 'Kode Transaksi harus diisi !'
-				]);
-				$this->form_validation->set_rules('petugas', 'Petugas' , 'required|trim', [
-					'required' => 'Nama Petugas harus diisi !'
-				]);
-				$this->form_validation->set_rules('cabang', 'Cabang' , 'required|trim', [
-					'required' => 'Cabang Toko harus dipilih !'
-				]);
-				$this->form_validation->set_rules('cabang', 'Cabang' , 'required|trim', [
-					'required' => 'Cabang Toko harus dipilih !'
-				]);
-				$this->form_validation->set_rules('namamember', 'Nama Pelanggan' , 'required|trim', [
-					'required' => 'Nama Pelanggan harus dipilih !'
-				]);
-				$this->form_validation->set_rules('paket', 'Paket Laundry' , 'required|trim', [
-					'required' => 'Paket Laundry harus dipilih !'
-				]);
-				$this->form_validation->set_rules('jumlah', 'Jumlah Barang' , 'required|trim|numeric', [
-					'required' => 'Jumlah Barang harus diisi !',
-					'numeric' => 'Input Jumlah Barang harus angka !'
-				]);
-				$this->form_validation->set_rules('harga_jual', 'Harga Jual' , 'required|trim|numeric', [
-					'required' => 'Harga Jual harus diisi !',
-					'numeric' => 'Input Harga Jual harus angka !'
-				]);
-				$this->form_validation->set_rules('diskon_paket', 'Diskon' , 'required|trim|numeric', [
-					'required' => 'Diskon harus diisi !',
-					'numeric' => 'Input Diskon harus angka !'
-				]);
-				$this->form_validation->set_rules('harga_diskon', 'Harga Diskon' , 'required|trim|numeric', [
-					'required' => 'Harga Diskon harus diisi !',
-					'numeric' => 'Input Harga Diskon harus angka !'
-				]);
-				$this->form_validation->set_rules('total', 'Total Harga' , 'required|trim|numeric', [
-					'required' => 'Total Harga harus diisi !',
-					'numeric' => 'Input Total Harga harus angka !'
-				]);
-				$this->form_validation->set_rules('tunai', 'Tunai' , 'required|trim|numeric', [
-					'required' => 'Jumlah Uang harus diisi !',
-					'numeric' => 'Input Jumlah Uang harus angka !'
-				]);
-				$this->form_validation->set_rules('kembali', 'Kembalian' , 'required|trim|numeric', [
-					'required' => 'Kembalian harus diisi !',
-					'numeric' => 'Input Kembalian harus angka !'
-				]);
-				$this->form_validation->set_rules('t_pembayaran', 'Tipe Pembayaran' , 'required|trim', [
-					'required' => 'Tipe Pembayaran harus dipilih !'
-				]);
-				$this->form_validation->set_rules('s_pembayaran', 'Status Pembayaran' , 'required|trim', [
-					'required' => 'Status Pembayaran harus dipilih !'
-				]);
-				$this->form_validation->set_rules('s_order', 'Status Order' , 'required|trim', [
-					'required' => 'Status Order harus dipilih !'
-				]);
-
-				if($this->form_validation->run() == false){
-					return false;
-				}else{
-					return true;
-				}
-			}
-
-			public function crud_transaksi($mode, $id){
-				if($mode == 'simpan'){
-					$this->db->set('tgl', $this->input->post('tgl_transaksi', true));
-					$this->db->set('kode_invoice', $this->input->post('kodeinvoice', true));
-					$this->db->set('id_user', $this->input->post('id_petugas', true));
-					$this->db->set('id_outlet', $this->input->post('cabang', true));
-					$this->db->set('id_member', $this->input->post('namamember', true));
-					$this->db->set('id_paket', $this->input->post('paket', true));
-					$this->db->set('jumlah', $this->input->post('jumlah', true));
-					$this->db->set('harga_jual', $this->input->post('harga_jual', true));
-					$this->db->set('diskon', $this->input->post('diskon_paket', true));
-					$this->db->set('harga_diskon', $this->input->post('harga_diskon', true));
-					$this->db->set('biaya_tambahan', '500');
-					$this->db->set('pajak', '500');
-					$this->db->set('total', $this->input->post('total', true));
-					$this->db->set('tunai', $this->input->post('tunai', true));
-					$this->db->set('kembali_or_kurang', $this->input->post('kembali', true));
-					$this->db->set('tipe_pembayaran', $this->input->post('t_pembayaran', true));
-					$this->db->set('status', $this->input->post('s_order', true));
-					if($this->input->post('s_pembayaran') == "Dibayar"){
-						$this->db->set('tgl_bayar', date('Y/m/d H:i:s'));	
-					}else{
-						$this->db->set('tgl_bayar', '0000/00/00 00:00:00');
-					}
-					$this->db->set('tgl_ambil', date('Y/m/d H:i:s',strtotime($this->input->post('tgl_ambil'))));
-					$this->db->set('status_bayar', $this->input->post('s_pembayaran', true));
-
-					$this->db->insert('tb_transaksi');
-				}elseif($mode == 'ubah'){
-					$id = $this->input->post('id');
-					$this->db->set('tunai', $this->input->post('harga_tunai_detail', true));
-					$this->db->set('kembali_or_kurang', $this->input->post('harga_kembali_detail', true));
-					$this->db->set('status', $this->input->post('edit_s_order', true));
-					$this->db->set('status_bayar', $this->input->post('edit_s_pembayaran', true));
-
-					$this->db->where('id', $id);
-					$this->db->update('tb_transaksi');
-				}
-			}
-
-
+	// manajemen transaksi {sudah pakai ajax}
 		public function get_db_transaksi(){
 			$data = $this->db->get("tb_transaksi");
 			return $data->result();
 		}
-		
-		public function get_data_edit_db_transaksi($id){
-			$data = $this->db->query("SELECT * FROM tb_transaksi WHERE id='$id'");
-			return $data->result();
-		}
-			// struk transaksi
-				public function get_data_struk_transaksi($kode_invoice){
-					$data = $this->db->query("SELECT * FROM tb_transaksi WHERE kode_invoice='$kode_invoice'");
-					return $data->result();
-				}
-		public function edit_db_transaksi(){
-			$id = $this->input->post('id');
-			$this->db->set('tunai', $this->input->post('harga_tunai_detail', true));
-			$this->db->set('kembali_or_kurang', $this->input->post('harga_kembali_detail', true));
-			$this->db->set('status', $this->input->post('edit_s_order', true));
-			$this->db->set('status_bayar', $this->input->post('edit_s_pembayaran', true));
-
-			$this->db->where('id', $id);
-			$this->db->update('tb_transaksi');
-		}
-
 		public function get_data_paket($id){
 			$query = $this->db->get_where("tb_paket", ['id' => $id]);
 			return $query;
 		}
-
 		public function get_data_outlet_paket($id){
 			$query = $this->db->get_where("tb_paket", ['id_outlet' => $id]);
 			return $query;
 		}
 
-		public function simpan_db_transaksi(){
-			$this->db->set('tgl', $this->input->post('tgl_transaksi', true));
-			$this->db->set('kode_invoice', $this->input->post('kodeinvoice', true));
-			$this->db->set('id_user', $this->input->post('id_petugas', true));
-			$this->db->set('id_outlet', $this->input->post('cabang', true));
-			$this->db->set('id_member', $this->input->post('namamember', true));
-			$this->db->set('id_paket', $this->input->post('paket', true));
-			$this->db->set('jumlah', $this->input->post('jumlah', true));
-			$this->db->set('harga_jual', $this->input->post('harga_jual', true));
-			$this->db->set('diskon', $this->input->post('diskon_paket', true));
-			$this->db->set('harga_diskon', $this->input->post('harga_diskon', true));
-			$this->db->set('biaya_tambahan', '500');
-			$this->db->set('pajak', '500');
-			$this->db->set('total', $this->input->post('total', true));
-			$this->db->set('tunai', $this->input->post('tunai', true));
-			$this->db->set('kembali_or_kurang', $this->input->post('kembali', true));
-			$this->db->set('tipe_pembayaran', $this->input->post('t_pembayaran', true));
-			$this->db->set('status', $this->input->post('s_order', true));
-			if($this->input->post('s_pembayaran') == "Dibayar"){
-				$this->db->set('tgl_bayar', date('Y/m/d H:i:s'));	
-			}else{
-				$this->db->set('tgl_bayar', '0000/00/00 00:00:00');
-			}
-			$this->db->set('tgl_ambil', date('Y/m/d H:i:s',strtotime($this->input->post('tgl_ambil'))));
-			$this->db->set('status_bayar', $this->input->post('s_pembayaran', true));
-
-			$this->db->insert('tb_transaksi');
+		public function get_status_order(){
+			$query = "SHOW COLUMNS FROM tb_transaksi WHERE FIELD = 'status'";
+			$row = $this->db->query($query)->row()->Type;
+			$regex = "/'(.*?)'/";
+			preg_match_all( $regex , $row, $enum_array );
+			$enum_fields = $enum_array[1];
+			return( $enum_fields );
 		}
-		// detail transaksi
-			// public function simpan_db_detail_transaksi(){
-			// 	$this->db->set('tgl', $this->input->post('tgl_transaksi', true));
-			// 	$this->db->set('kode_invoice', $this->input->post('kodeinvoice', true));
-			// 	$this->db->set('id_user', $this->input->post('id_petugas', true));
-			// 	$this->db->set('id_outlet', $this->input->post('cabang', true));
-			// 	$this->db->set('id_member', $this->input->post('namamember', true));
-			// 	$this->db->set('id_paket', $this->input->post('paket', true));
-			// 	$this->db->set('jumlah', $this->input->post('jumlah', true));
-			// 	$this->db->set('harga_jual', $this->input->post('harga_jual', true));
-			// 	$this->db->set('diskon', $this->input->post('diskon_paket', true));
-			// 	$this->db->set('harga_diskon', $this->input->post('harga_diskon', true));
-			// 	$this->db->set('biaya_tambahan', '500');
-			// 	$this->db->set('pajak', '500');
-			// 	$this->db->set('total', $this->input->post('total', true));
-			// 	$this->db->set('tunai', $this->input->post('tunai', true));
-			// 	$this->db->set('kembali_or_kurang', $this->input->post('kembali', true));
-			// 	$this->db->set('tipe_pembayaran', $this->input->post('t_pembayaran', true));
-			// 	$this->db->set('status', $this->input->post('s_order', true));
-			// 	if($this->input->post('s_pembayaran') == "Dibayar"){
-			// 		$this->db->set('tgl_bayar', date('Y/m/d H:i:s'));	
-			// 	}else{
-			// 		$this->db->set('tgl_bayar', '0000/00/00 00:00:00');
-			// 	}
-			// 	$this->db->set('tgl_ambil', date('Y/m/d H:i:s',strtotime($this->input->post('tgl_ambil'))));
-			// 	$this->db->set('status_bayar', $this->input->post('s_pembayaran', true));
+		public function get_status_dibayar(){
+			$query = "SHOW COLUMNS FROM tb_transaksi WHERE FIELD = 'status_bayar'";
+			$row = $this->db->query($query)->row()->Type;
+			$regex = "/'(.*?)'/";
+			preg_match_all( $regex , $row, $enum_array );
+			$enum_fields = $enum_array[1];
+			return( $enum_fields );
+		}
 
-			// 	$this->db->insert('tb_transaksi');
-			// }
+		public function h_transaksi_baru(){
+			$data = $this->db->get_where("tb_transaksi", ['status' => 'baru']);
+			return $data->num_rows();
+		}
+		public function h_total_transaksi(){
+			$data = $this->db->get("tb_transaksi");
+			return $data->num_rows();
+		}
+
+		public function show_transaksi(){
+			$this->db->order_by('id', 'desc');
+			$data = $this->db->get("tb_transaksi");
+			return $data->result();
+		}
+		public function validation_transaksi(){
+			$this->form_validation->set_rules('kodeinvoice', 'Kode Transaksi' , 'required|trim', [
+				'required' => 'Kode Transaksi harus diisi !'
+			]);
+			$this->form_validation->set_rules('petugas', 'Petugas' , 'required|trim', [
+				'required' => 'Nama Petugas harus diisi !'
+			]);
+			$this->form_validation->set_rules('cabang', 'Cabang' , 'required|trim', [
+				'required' => 'Cabang Toko harus dipilih !'
+			]);
+			$this->form_validation->set_rules('cabang', 'Cabang' , 'required|trim', [
+				'required' => 'Cabang Toko harus dipilih !'
+			]);
+			$this->form_validation->set_rules('namamember', 'Nama Pelanggan' , 'required|trim', [
+				'required' => 'Nama Pelanggan harus dipilih !'
+			]);
+			$this->form_validation->set_rules('paket', 'Paket Laundry' , 'required|trim', [
+				'required' => 'Paket Laundry harus dipilih !'
+			]);
+			$this->form_validation->set_rules('jumlah', 'Jumlah Barang' , 'required|trim|numeric', [
+				'required' => 'Jumlah Barang harus diisi !',
+				'numeric' => 'Input Jumlah Barang harus angka !'
+			]);
+			$this->form_validation->set_rules('harga_jual', 'Harga Jual' , 'required|trim|numeric', [
+				'required' => 'Harga Jual harus diisi !',
+				'numeric' => 'Input Harga Jual harus angka !'
+			]);
+			$this->form_validation->set_rules('diskon_paket', 'Diskon' , 'required|trim|numeric', [
+				'required' => 'Diskon harus diisi !',
+				'numeric' => 'Input Diskon harus angka !'
+			]);
+			$this->form_validation->set_rules('harga_diskon', 'Harga Diskon' , 'required|trim|numeric', [
+				'required' => 'Harga Diskon harus diisi !',
+				'numeric' => 'Input Harga Diskon harus angka !'
+			]);
+			$this->form_validation->set_rules('total', 'Total Harga' , 'required|trim|numeric', [
+				'required' => 'Total Harga harus diisi !',
+				'numeric' => 'Input Total Harga harus angka !'
+			]);
+			$this->form_validation->set_rules('tunai', 'Tunai' , 'required|trim|numeric', [
+				'required' => 'Jumlah Uang harus diisi !',
+				'numeric' => 'Input Jumlah Uang harus angka !'
+			]);
+			$this->form_validation->set_rules('kembali', 'Kembalian' , 'required|trim|numeric', [
+				'required' => 'Kembalian harus diisi !',
+				'numeric' => 'Input Kembalian harus angka !'
+			]);
+			$this->form_validation->set_rules('t_pembayaran', 'Tipe Pembayaran' , 'required|trim', [
+				'required' => 'Tipe Pembayaran harus dipilih !'
+			]);
+			$this->form_validation->set_rules('s_pembayaran', 'Status Pembayaran' , 'required|trim', [
+				'required' => 'Status Pembayaran harus dipilih !'
+			]);
+			$this->form_validation->set_rules('s_order', 'Status Order' , 'required|trim', [
+				'required' => 'Status Order harus dipilih !'
+			]);
+
+			if($this->form_validation->run() == false){
+				return false;
+			}else{
+				return true;
+			}
+		}
+
+		public function crud_transaksi($mode, $id){
+			if($mode == 'simpan'){
+				$this->db->set('tgl', $this->input->post('tgl_transaksi', true));
+				$this->db->set('kode_invoice', $this->input->post('kodeinvoice', true));
+				$this->db->set('id_user', $this->input->post('id_petugas', true));
+				$this->db->set('id_outlet', $this->input->post('cabang', true));
+				$this->db->set('id_member', $this->input->post('namamember', true));
+				$this->db->set('id_paket', $this->input->post('paket', true));
+				$this->db->set('jumlah', $this->input->post('jumlah', true));
+				$this->db->set('harga_jual', $this->input->post('harga_jual', true));
+				$this->db->set('diskon', $this->input->post('diskon_paket', true));
+				$this->db->set('harga_diskon', $this->input->post('harga_diskon', true));
+				$this->db->set('biaya_tambahan', '500');
+				$this->db->set('pajak', '500');
+				$this->db->set('total', $this->input->post('total', true));
+				$this->db->set('tunai', $this->input->post('tunai', true));
+				$this->db->set('kembali_or_kurang', $this->input->post('kembali', true));
+				$this->db->set('tipe_pembayaran', $this->input->post('t_pembayaran', true));
+				$this->db->set('status', $this->input->post('s_order', true));
+				if($this->input->post('s_pembayaran') == "Dibayar"){
+					$this->db->set('tgl_bayar', date('Y/m/d H:i:s'));	
+				}else{
+					$this->db->set('tgl_bayar', '0000/00/00 00:00:00');
+				}
+				$this->db->set('tgl_ambil', date('Y/m/d H:i:s',strtotime($this->input->post('tgl_ambil'))));
+				$this->db->set('status_bayar', $this->input->post('s_pembayaran', true));
+
+				$this->db->insert('tb_transaksi');
+			}elseif($mode == 'ubah'){
+				$id = $this->input->post('id');
+				$this->db->set('tunai', $this->input->post('harga_tunai_detail', true));
+				$this->db->set('kembali_or_kurang', $this->input->post('harga_kembali_detail', true));
+				$this->db->set('status', $this->input->post('edit_s_order', true));
+				$this->db->set('status_bayar', $this->input->post('edit_s_pembayaran', true));
+
+				$this->db->where('id', $id);
+				$this->db->update('tb_transaksi');
+			}
+		}
+		
+		// struk transaksi
+			public function get_data_struk_transaksi($kode_invoice){
+				$data = $this->db->query("SELECT * FROM tb_transaksi WHERE kode_invoice='$kode_invoice'");
+				return $data->result();
+			}
 }
 
 ?>
